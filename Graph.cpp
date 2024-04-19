@@ -7,7 +7,15 @@
 namespace ariel {
 
 void Graph::loadGraph(vector<vector<int>> ajdList) {
+    // check if the graph is a square matrix
+    for (int i = 0; i < ajdList.size(); i++) {
+        if (ajdList.size() != ajdList[i].size()) {
+            throw invalid_argument("Invalid graph: The graph is not a square matrix.");
+        }
+    }
+    // update the size of the graph
     this->ajdList.resize(ajdList.size());
+    
     for (int i = 0; i < ajdList.size(); i++) {
         for (int j = 0; j < ajdList[i].size(); j++) {
             this->ajdList[i].push_back(ajdList[i][j]);
@@ -37,11 +45,6 @@ void Graph::printGraph() {
         }
     }
 
-    // if the graph is undirected, the number of edges is divided by 2
-    if (!isDirected) {
-        count_edges /= 2;
-    }
-
     cout << "Graph with " << ajdList.size() << " vertices and " << count_edges << " edges." << endl;
 }
 
@@ -52,9 +55,7 @@ vector<vector<int>> Graph::getGraph() {
 bool Graph::isWeightedGraph() {
     return this->isWeighted;
 }
-bool Graph::isDirectedGraph() {
-    return this->isDirected;
-}
+
 bool Graph::isHaveNegativeEdgeWeight() {
     return this->haveNegativeEdgeWeight;
 }

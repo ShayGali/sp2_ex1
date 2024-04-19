@@ -26,13 +26,11 @@ bool Algorithms::isConnected(Graph& g) {
     if (firstDfsTree.size() == 1) {
         return true;
     }
-    if (g.isDirectedGraph()) {
-        // Perform DFS on the root of the last DFS tree (the first element of the last vector in the firstDfsTree matrix
-        int firstElementOfLastVector = firstDfsTree.back().front();
-        vector<vector<int>> secondDfsTree = Algorithms::dfs(g);
+    // Perform DFS on the root of the last DFS tree (the first element of the last vector in the firstDfsTree matrix
+    int firstElementOfLastVector = firstDfsTree.back().front();
+    vector<vector<int>> secondDfsTree = Algorithms::dfs(g);
 
-        return secondDfsTree.size() == 1;
-    }
+    return secondDfsTree.size() == 1;
     return false;
 }
 
