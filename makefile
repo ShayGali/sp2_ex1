@@ -10,11 +10,14 @@ OBJECTS=$(subst .cpp,.o,$(SOURCES)) # replace .cpp with .o in SOURCES
 TEST=Test.cpp TestCounter.cpp
 TEST_OBJECTS=$(subst .cpp,.o,$(TEST))
 
-run: demo
+
+PORG=demo
+
+run: $(PORG)
 	./$^
 
-demo: Demo.o $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o demo
+$(PORG): $(PORG).o $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
 test: $(TEST_OBJECTS) $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o test
@@ -29,4 +32,4 @@ Graph.o: Graph.cpp Graph.hpp
 	$(CXX) $(CXXFLAGS) --compile $< -o $@
 
 clean:
-	rm -f *.o demo test core
+	rm -f *.o test core $(PORG)
