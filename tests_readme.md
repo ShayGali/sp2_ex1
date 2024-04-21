@@ -196,4 +196,20 @@ graph LR;
 ```
 
 
-    the shortest path from `A` to `C` is `A -> D -> E -> C` with a cost of `-6`.
+    the shortest path from `A` to `C` is `A -> D -> E -> C` with a cost of `-4`.
+
+
+5. a graph with a negative cycle, so the function should raise an exception.
+```mermaid
+graph LR;
+    A --> |-1| B;
+    A --> |-1| C;
+    B --> |1|  A;
+    B --> |-1| C;
+    C --> |1|  A;
+    C --> |1|  B;
+    C --> |-1| D;
+    D --> |1|  C;
+    D --> |-1| E;
+    E --> |1|  B;
+```
