@@ -206,3 +206,5 @@ graph LR;
     B --> |-1| C;
     C --> |1| A;
 ```
+
+    the negative cycle is `A -> B -> C -> A`

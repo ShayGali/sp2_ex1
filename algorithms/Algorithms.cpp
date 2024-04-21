@@ -220,10 +220,12 @@ string Algorithms::negativeCycle(Graph& g) {
 
     // create a new graph with a new vertex
     DirectedGraph newGraph = DirectedGraph();  // if the graph is undirected, we will have two edges between the each pair of vertices
-    vector<vector<int>> newGraphMat(n + 1, vector<int>(n + 1, NO_EDGE));
+    vector<vector<int>> newGraphMat(n + 1, vector<int>(n + 1, INF));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            newGraphMat[i][j] = g.getGraph()[i][j];
+            if (g.getGraph()[i][j] != NO_EDGE) {
+                newGraphMat[i][j] = g.getGraph()[i][j];
+            }
         }
     }
 
