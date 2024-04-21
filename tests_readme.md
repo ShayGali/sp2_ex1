@@ -35,6 +35,9 @@ smae as the previous test but for an undirected graph.
 in this test case I added a test to check if the matrix is symmetric or not.
 so tets case 4 will pass a non symmetric matrix and the function should raise `invalid_argument` exception.
 
+
+<hr>
+
 ### `isConnected` for Directed Graph
 to check if a directed graph is connected or not.
 
@@ -58,7 +61,7 @@ graph LR;
 
     we can see that the the node 4 is not connected to any other node.
 
-3. a graph with a single node, so it should be connected.
+1. a graph with a single node, so it should be connected.
 
 
 4. a graph that a have one root, what he not the first node in the matrix (so the dfs will not start from him), the function should return true.
@@ -84,7 +87,7 @@ the test are very similar to the previous test, but the graph is undirected.
     B --- C;
 ```
 
-2. not connected graph:
+1. not connected graph:
 ```mermaid
 graph TD;
     A --- B;
@@ -94,7 +97,9 @@ graph TD;
     E;
 ```
 
-3. a graph with a single node, so it should be connected.
+1. a graph with a single node, so it should be connected.
+
+<hr>
 
 ### `shortestPath` for Directed Graph
 
@@ -231,6 +236,8 @@ graph LR;
     the negative cycle is `A -> B -> C -> A`
 
 
+<hr>
+
 ### `shortestPath` for Undirected Graph
 
 #### unweighted graph
@@ -341,3 +348,27 @@ graph LR;
 
     the shortest path from `A` to `B` is `A -> B` with a cost of `100` or `A -> C -> D -> E -> B` with a cost of `100`
 
+#### weighted negative graph
+
+
+
+<hr>
+
+#### `isContainsCycle` for Directed Graph
+
+
+#### `isContainsCycle` for Undirected Graph
+
+
+<hr>
+
+
+#### `isBipartite` for Directed Graph
+
+#### `isBipartite` for Undirected Graph
+
+<hr>
+
+#### `negativeCycle` for Directed Graph
+
+#### `negativeCycle` for Undirected Graph
