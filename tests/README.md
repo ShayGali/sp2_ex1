@@ -379,11 +379,12 @@ graph LR;
     D --> B;
 ```
 
-3. graph with a cycle of 3 nodes, that dont start from the first node in the matrix
+3. graph with a cycle of 2 nodes, that dont start from the first node in the matrix
 ```mermaid
 graph TD;
     A --> B;
-    C <--> D;
+    C --> D;
+    D --> C;
     C --> A;
 ```
 
