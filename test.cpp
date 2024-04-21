@@ -320,15 +320,10 @@ TEST_CASE("Test shortestPath for DirectedGraph weighted with negative weights") 
     // negative cycle
     vector<vector<int>> graph3 = {
         // clang-format off
-                // 0      1        2        3        4
-        /* 0 */{NO_EDGE, -1    , -1     , NO_EDGE, NO_EDGE}, 
-        /* 1 */{1, NO_EDGE, -1, NO_EDGE, NO_EDGE}, 
-        /* 2 */{1, 1, NO_EDGE, -1     , NO_EDGE}, 
-        /* 3 */{NO_EDGE, NO_EDGE, 1, NO_EDGE, -1     }, 
-        /* 4 */{NO_EDGE, 1     , NO_EDGE, NO_EDGE, NO_EDGE}
-        // clang-format on
+        {NO_EDGE, -1,      NO_EDGE},
+        {NO_EDGE, NO_EDGE, -1     },
+        {1,       NO_EDGE, NO_EDGE}
     };
-
     g.loadGraph(graph3);
     CHECK(Algorithms::shortestPath(g, 0, 1) == "Graph contains a negative-weight cycle");
 }
