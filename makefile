@@ -1,35 +1,39 @@
-.PHONY: run clean test
 
 CXX=clang++-9
-CXXFLAGS=-std=c++2a -g # c++20
+CXXFLAGS=-std=c++2a -g -Werror -Wsign-conversion # c++20
 VALGRIND_FLAGS=-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
 
 
-SOURCES=Graph.cpp Algorithms.cpp
+SOURCES=graph/Graph.cpp graph/DirectedGraph.cpp graph/UndirectedGraph.cpp algorithms/Algorithms.cpp
 OBJECTS=$(subst .cpp,.o,$(SOURCES)) # replace .cpp with .o in SOURCES
-TEST=Test.cpp TestCounter.cpp
+TEST=test.cpp TestCounter.cpp
 TEST_OBJECTS=$(subst .cpp,.o,$(TEST))
 
+.PHONY: run clean test graph algorithms
 
-PORG=demo
+PROG=main
 
-run: $(PORG)
-	./$^
+run: $(PROG) graph algorithms
+	./$<
 
-$(PORG): $(PORG).o $(OBJECTS)
+
+$(PROG): $(PROG).o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 test: $(TEST_OBJECTS) $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o test
 
-Algorithms.o: Algorithms.cpp Algorithms.hpp
-	$(CXX) $(CXXFLAGS) --compile $< -o $@
+graph:
+	make -C graph all
 
-Graph.o: Graph.cpp Graph.hpp
-	$(CXX) $(CXXFLAGS) --compile $< -o $@
+algorithms:
+	make -C algorithms all
+
 
 %.o: %.cpp 
 	$(CXX) $(CXXFLAGS) --compile $< -o $@
 
 clean:
-	rm -f *.o test core $(PORG)
+	make -C graph clean
+	make -C algorithms clean
+	rm -f *.o test core main
