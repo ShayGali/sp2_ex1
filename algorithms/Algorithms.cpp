@@ -11,6 +11,7 @@
 using std::pair;
 
 // declare the helper functions
+bool isContainsCycleUtil(Graph& g, size_t src, vector<Color>* colors);
 vector<vector<size_t>> dfs(Graph& g);
 vector<size_t> dfs(Graph& g, size_t src, vector<Color>* colors);
 pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src);
@@ -90,37 +91,33 @@ bool Algorithms::isContainsCycle(Graph& g) {
     /*
     To check if the graph contains a cycle, we can perform DFS on the graph and check if there is a back edge in the graph.
     */
-
-    size_t n = g.getGraph().size();
-    vector<Color> colors(n, WHITE);
-    vector<size_t> stack;
-
-    for (size_t i = 0; i < n; i++) {
+    vector<Color> colors(g.getGraph().size(), WHITE);
+    for (size_t i = 0; i < g.getGraph().size(); i++) {
         if (colors[i] == WHITE) {
-            stack.push_back(i);
-            while (!stack.empty()) {
-                size_t u = stack.back();
-                stack.pop_back();
-                if (colors[u] == WHITE) {
-                    colors[u] = GRAY;
-                    for (size_t v = 0; v < n; v++) {
-                        if (g.getGraph()[u][v] != NO_EDGE) {
-                            if (colors[v] == WHITE) {
-                                stack.push_back(v);
-                            } else if (colors[v] == GRAY) {
-                                return true;
-                            }
-                        }
-                    }
-                } else if (colors[u] == GRAY) {
-                    colors[u] = BLACK;
-                }
+            if (isContainsCycleUtil(g, i, &colors)) {
+                return true;
             }
         }
     }
     return false;
 }
 
+bool isContainsCycleUtil(Graph& g, size_t src, vector<Color>* colors) {
+    (*colors)[src] = GRAY;
+    for (size_t v = 0; v < g.getGraph().size(); v++) {
+        if (g.getGraph()[src][v] != NO_EDGE) {
+            if ((*colors)[v] == GRAY) {
+                return true;
+            } else if ((*colors)[v] == WHITE) {
+                if (isContainsCycleUtil(g, v, colors)) {
+                    return true;
+                }
+            }
+        }
+    }
+    (*colors)[src] = BLACK;
+    return false;
+}
 string Algorithms::isBipartite(Graph& g) {
     /*
     To check if a graph is bipartite, we will perform DFS on the graph and color the vertices in two colors.

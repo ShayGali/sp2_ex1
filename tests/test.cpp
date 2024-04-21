@@ -2,11 +2,11 @@
 #include <stdexcept>
 #include <vector>
 
-#include "doctest.h"
 #include "../algorithms/Algorithms.hpp"
 #include "../graph/DirectedGraph.hpp"
 #include "../graph/Graph.hpp"
 #include "../graph/UndirectedGraph.hpp"
+#include "doctest.h"
 
 using namespace std;
 
@@ -401,8 +401,8 @@ TEST_CASE("Test shortestPath for UndirectedGraph unweighted") {
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     vector<vector<int>> graph4 = {
         //clang-format off
-        /* 0 */ {NO_EDGE, 1      , NO_EDGE},
-        /* 1 */ {1      , NO_EDGE, NO_EDGE},
+        /* 0 */ {NO_EDGE, 1, NO_EDGE},
+        /* 1 */ {1, NO_EDGE, NO_EDGE},
         /* 2 */ {NO_EDGE, NO_EDGE, NO_EDGE}
         //clang-format on
     };
@@ -504,7 +504,54 @@ TEST_CASE("Test shortestPath for UndirectedGraph weighted with negative weights"
 }
 */
 
-TEST_CASE("Test isContainsCycle for DirectedGraph") {}
+TEST_CASE("Test isContainsCycle for DirectedGraph") {
+    DirectedGraph g;
+
+    vector<vector<int>> graph = {
+        // clang-format off
+        {NO_EDGE, 1,       NO_EDGE},
+        {NO_EDGE, NO_EDGE, 1      },
+        {1,       NO_EDGE, NO_EDGE}
+        // clang-format on
+    };
+
+    g.loadGraph(graph);
+    CHECK(Algorithms::isContainsCycle(g) == true);
+
+    vector<vector<int>> graph2 = {
+        // clang-format off
+        {NO_EDGE, 1,       NO_EDGE, NO_EDGE},
+        {NO_EDGE, NO_EDGE, 1,       NO_EDGE},
+        {NO_EDGE, NO_EDGE, NO_EDGE, 1      },
+        {NO_EDGE, 1,       NO_EDGE, NO_EDGE}
+        // clang-format on
+    };
+
+    g.loadGraph(graph2);
+    CHECK(Algorithms::isContainsCycle(g) == true);
+
+    vector<vector<int>> graph3 = {
+        // clang-format off
+        {NO_EDGE, 1,       NO_EDGE, NO_EDGE},
+        {NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE},
+        {1,       NO_EDGE, NO_EDGE, 1      },
+        {NO_EDGE, NO_EDGE, 1,       NO_EDGE}
+        // clang-format on
+    };
+
+    g.loadGraph(graph3);
+    CHECK(Algorithms::isContainsCycle(g) == true);
+
+    vector<vector<int>> graph4 = {
+        // clang-format off
+        {NO_EDGE, 1,       1      },
+        {NO_EDGE, NO_EDGE, 1      },
+        {NO_EDGE, NO_EDGE, NO_EDGE}
+        // clang-format on
+    };
+    g.loadGraph(graph4);
+    CHECK(Algorithms::isContainsCycle(g) == false);
+}
 
 TEST_CASE("Test isContainsCycle for UndirectedGraph") {}
 
