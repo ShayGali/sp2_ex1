@@ -20,8 +20,7 @@ to check if a directed graph is connected or not.
 we have 4 tests in this file:
 1. this graph is connected, and looks like this:
 ```mermaid
-graph TD;
+graph LR;
     A[0]-->B[1];
     B[1]-->C[2];
-    C[2]
 ```
