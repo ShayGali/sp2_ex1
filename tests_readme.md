@@ -24,3 +24,16 @@ graph LR;
     A[0]-->B[1];
     B[1]-->C[2];
 ```
+
+2. this graph is not connected, and looks like this:
+```mermaid
+graph TD;
+    A[0]-->B[1];
+    A[0]-->C[2];
+    B[1]-->A[0];
+    B[1]-->C[2];
+    C[2]-->A[0];
+    C[2]-->B[1];
+    C[2]-->D[3];
+    D[3]-->C[2];
+```
