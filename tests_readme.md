@@ -1,3 +1,23 @@
+# Tests for EX1
+in this file I will explain the tests that I wrote for the first exercise.
+
+there are 6 main functions that I tested:
+1. `loadGraph`
+2. `isConnected`
+3. `shortestPath`
+4. `isContainsCycle`
+5. `isBipartite`
+6. `negativeCycle`
+
+in each function I tested the function with different types of graphs:
+* directed graph
+* undirected graph
+
+for the `shortestPath` function I tested the function with different types of graphs:
+* unweighted graph
+* weighted non-negative graph
+* weighted negative graph
+
 
 ### `loadGraph` for Directed Graph
 
