@@ -54,3 +54,29 @@ graph LR;
 ```
 
     in this graph the node `D` is the root, and the dfs will start from the node `A`.
+
+### `isConnected` for Undirected Graph
+in undirected graph the function should return true if the graph is connected, and false otherwise.
+
+the test are very similar to the previous test, but the graph is undirected.
+
+1. first connected graph:
+```mermaid
+    A--B;
+    B--C;
+```
+
+2. not connected graph:
+```mermaid
+    A--B;
+    A--C;
+    B--A;
+    B--C;
+    C--A;
+    C--B;
+    C--D;
+    D--C;
+    E;
+```
+
+3. a graph with a single node, so it should be connected.
