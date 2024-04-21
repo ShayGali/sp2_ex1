@@ -21,20 +21,32 @@ we have 4 tests in this file:
 1. this graph is connected, and looks like this:
 ```mermaid
 graph LR;
-    A[0]-->B[1];
-    B[1]-->C[2];
+    A-->B;
+    B-->C;
 ```
 
 2. this graph is not connected, and looks like this:
 ```mermaid
 graph LR;
-    A[0]-->B[1];
-    A[0]-->C[2];
-    B[1]-->A[0];
-    B[1]-->C[2];
-    C[2]-->A[0];
-    C[2]-->B[1];
-    C[2]-->D[3];
-    D[3]-->C[2];
-    E[4];
+    A-->B;
+    A-->C;
+    B-->A;
+    B-->C;
+    C-->A;
+    C-->B;
+    C-->D;
+    D-->C;
+    E;
+```
+
+we can see that the the node 4 is not connected to any other node.
+
+3. a graph with a single node, so it should be connected.
+4. a graph that a have one root, what he not the first node in the matrix (so the dfs will not start from him), the function should return true.
+```mermaid
+graph LR;
+    A-->B;
+    B-->C;
+    C-->A;
+    D-->B;
 ```
