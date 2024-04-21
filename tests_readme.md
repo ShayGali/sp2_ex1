@@ -39,9 +39,11 @@ graph LR;
     E;
 ```
 
-we can see that the the node 4 is not connected to any other node.
+    we can see that the the node 4 is not connected to any other node.
 
 3. a graph with a single node, so it should be connected.
+
+
 4. a graph that a have one root, what he not the first node in the matrix (so the dfs will not start from him), the function should return true.
 ```mermaid
 graph LR;
@@ -50,3 +52,5 @@ graph LR;
     C-->A;
     D-->B;
 ```
+
+    in this graph the node `D` is the root, and the dfs will start from the node `A`.
