@@ -75,7 +75,7 @@ graph TD;
 
 3. a graph with a single node, so it should be connected.
 
-### shortestPath for Directed Graph
+### `shortestPath` for Directed Graph
 
 #### unweighted graph
 
@@ -208,3 +208,34 @@ graph LR;
 ```
 
     the negative cycle is `A -> B -> C -> A`
+
+
+### `shortestPath` for Undirected Graph
+
+#### unweighted graph
+1. first graph:
+```mermaid
+    graph LR;
+    A --- B;
+    B --- C;
+```
+
+* the shortest path from `A` to `B` is `A -> B`
+* the shortest path from `A` to `C` is `A -> B -> C`
+* the shortest path from `B` to `C` is `B -> C`
+* there is no path from `C` to `A`
+* the shortest path from `A` to `A` is `A`
+
+2. second graph:
+```mermaid
+graph LR;
+    A --- B;
+    A --- C;
+    B --- C;
+    C --- D;
+    D --- E;
+```
+
+* the shortest path from `A` to `B` is `A -> B`
+* the shortest path from `A` to `C` is `A -> C`
+* the shortest path from `A` to `E` is `A -> C -> D -> E`
