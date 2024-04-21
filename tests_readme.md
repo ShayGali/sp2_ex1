@@ -18,6 +18,7 @@ for the `shortestPath` function I tested the function with different types of gr
 * weighted non-negative graph
 * weighted negative graph
 
+<hr>
 
 ### `loadGraph` for Directed Graph
 
