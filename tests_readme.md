@@ -349,13 +349,20 @@ graph LR;
     the shortest path from `A` to `B` is `A -> B` with a cost of `100` or `A -> C -> D -> E -> B` with a cost of `100`
 
 #### weighted negative graph
-
+1. 
+```mermaid
+graph LR;
+    A --- |10| B;
+    B --- |-5| C;
+    A --- |-1| C;
+```
 
 
 <hr>
 
 #### `isContainsCycle` for Directed Graph
 
+1.
 
 #### `isContainsCycle` for Undirected Graph
 
