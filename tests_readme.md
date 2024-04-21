@@ -283,7 +283,7 @@ graph LR;
 
     the shortest path from `A` to `B` is `A -> C -> B` with a cost of `31`
 
-3. same as the previous one, but now (B,C) = 1000
+3. same as the previous one, but now {B,C} = 1000
 ```mermaid
 graph LR;
     A --- |100| B;
@@ -294,3 +294,29 @@ graph LR;
 ```
     
         the shortest path from `A` to `B` is `A -> B` with a cost of `100`
+
+4. 
+```mermaid
+graph LR;
+    A --- |100| B;
+    A --- |30| C;
+    B --- |9| E;
+    C --- |10| D;
+    D --- |50| E;
+```
+
+    the shortest path from `A` to `B` is `A -> C -> D -> E -> B` with a cost of `99`
+
+5. same as the previous one, but now {B,E}=10
+
+```mermaid
+graph LR;
+    A --- |100| B;
+    A --- |30| C;
+    B --- |10| E;
+    C --- |10| D;
+    D --- |50| E;
+```
+
+    the shortest path from `A` to `B` is `A -> B` with a cost of `100` or `A -> C -> D -> E -> B` with a cost of `100`
+
