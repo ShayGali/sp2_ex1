@@ -182,3 +182,18 @@ graph LR;
     D --> |-50| E;
     E --> |-21| B;
 ```
+
+4. this graph will fail if we will run `dijkstra` algorithm, on him, but the bellman-ford will work correctly.
+
+```mermaid
+graph LR;
+    A --> |0| B;
+    A --> |2| D;
+    A --> |-2| E;
+    B --> |-1| C;
+    D --> |-8| E;
+    E --> |2| C;
+```
+
+
+    the shortest path from `A` to `C` is `A -> D -> E -> C` with a cost of `-6`.
