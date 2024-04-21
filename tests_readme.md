@@ -239,3 +239,58 @@ graph LR;
 * the shortest path from `A` to `B` is `A -> B`
 * the shortest path from `A` to `C` is `A -> C`
 * the shortest path from `A` to `E` is `A -> C -> D -> E`
+
+3. empty graph, so there is no path between any two nodes.
+
+4. graph with 3 nodes, and just A and B are connected.
+    
+```mermaid
+graph LR;
+    A --- B;
+    C;
+```
+
+* there is no path from `A` to `C`
+* the shortest path from `A` to `B` is `A -> B`
+* there is no path from `B` to `C`
+* the shortest path from `B` to `A` is `B -> A`
+
+
+#### weighted non-negative graph
+
+1. 
+```mermaid
+graph LR;
+    A --- |3| B;
+    B --- |5| C;
+```
+
+* the shortest path from `A` to `B` is `A -> B` with a cost of `3`
+* the shortest path from `A` to `C` is `A -> B -> C` with a cost of `8`
+* the shortest path from `B` to `C` is `B -> C` with a cost of `5`
+* the shortest path from `C` to `A` is `C -> B -> A` with a cost of `8`
+* the shortest path from `A` to `A` is `A` with a cost of `0`
+
+2. 
+```mermaid
+graph LR;
+    A --- |100| B;
+    A --- |30| C;
+    B --- |1| C;
+    C --- |25| D;
+    D --- |50| E;
+```
+
+    the shortest path from `A` to `B` is `A -> C -> B` with a cost of `31`
+
+3. same as the previous one, but now (B,C) = 1000
+```mermaid
+graph LR;
+    A --- |100| B;
+    A --- |30| C;
+    B --- |1000| C;
+    C --- |25| D;
+    D --- |50| E;
+```
+    
+        the shortest path from `A` to `B` is `A -> B` with a cost of `100`

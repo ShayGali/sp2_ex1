@@ -401,8 +401,8 @@ TEST_CASE("Test shortestPath for UndirectedGraph unweighted") {
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     vector<vector<int>> graph4 = {
         //clang-format off
-        /* 0 */ {NO_EDGE, 1, NO_EDGE},
-        /* 1 */ {1, NO_EDGE, NO_EDGE},
+        /* 0 */ {NO_EDGE, 1      , NO_EDGE},
+        /* 1 */ {1      , NO_EDGE, NO_EDGE},
         /* 2 */ {NO_EDGE, NO_EDGE, NO_EDGE}
         //clang-format on
     };
