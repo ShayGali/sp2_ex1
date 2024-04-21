@@ -2,11 +2,11 @@
 #include <stdexcept>
 #include <vector>
 
-#include "algorithms/Algorithms.hpp"
 #include "doctest.h"
-#include "graph/DirectedGraph.hpp"
-#include "graph/Graph.hpp"
-#include "graph/UndirectedGraph.hpp"
+#include "../algorithms/Algorithms.hpp"
+#include "../graph/DirectedGraph.hpp"
+#include "../graph/Graph.hpp"
+#include "../graph/UndirectedGraph.hpp"
 
 using namespace std;
 
