@@ -213,7 +213,7 @@ string Algorithms::negativeCycle(DirectedGraph& g) {
 
     to get the negative cycle, we will go back with the `parents` vector until we reach the vertex we started from.
 
-    because in our graph representation, no edeges have a weight of 0, in this function we will change the NO_EDGE value to INFINITY.
+    because in our graph representation, no edges have a weight of 0, in this function we will change the NO_EDGE value to INFINITY.
     */
 
     size_t n = g.getGraph().size();
@@ -262,7 +262,7 @@ string Algorithms::negativeCycle(UndirectedGraph& g) {
 
     to get the negative cycle, we will go back with the `parents` vector until we reach the vertex we started from.
 
-    because in our graph representation, no edeges have a weight of 0, in this function we will change the NO_EDGE value to INFINITY.
+    because in our graph representation, no edges have a weight of 0, in this function we will change the NO_EDGE value to INFINITY.
     */
 
     size_t n = g.getGraph().size();
