@@ -143,3 +143,41 @@ graph LR;
     E --> |21| B;
 ```
     the shortest path from `A` to `B` is `A -> C -> D -> E -> B` with a cost of `77`
+
+#### weighted negative graph
+1.
+
+```mermaid
+graph LR;
+    A --> |-1| B;
+    B --> |1| A;
+    B --> |-5| C;
+```
+
+* the shortest path from `A` to `B` is `A -> B` with a cost of `-1`
+* the shortest path from `A` to `C` is `A -> B -> C` with a cost of `-6`
+* the shortest path from `B` to `C` is `B -> C` with a cost of `-5`
+* there is no path from `C` to `A`
+* the shortest path from `A` to `A` is `A` with a cost of `0`
+
+
+2.
+```mermaid
+graph LR;
+    A --> |-100| B;
+    A --> |-30| C;
+    C --> |-25| D;
+    D --> |-50| E;
+    E --> |-21| B;
+```
+
+    the shortest path from `A` to `B` is `A -> C -> D -> E -> B` with a cost of `-226`
+
+3. same as the previous one, but now (A,B) = -1000
+graph LR;
+    A --> |-1000| B;
+    A --> |-30| C;
+    C --> |-25| D;
+    D --> |-50| E;
+    E --> |-21| B;
+```
