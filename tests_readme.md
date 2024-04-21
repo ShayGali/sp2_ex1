@@ -174,6 +174,7 @@ graph LR;
     the shortest path from `A` to `B` is `A -> C -> D -> E -> B` with a cost of `-226`
 
 3. same as the previous one, but now (A,B) = -1000
+```mermaid
 graph LR;
     A --> |-1000| B;
     A --> |-30| C;
