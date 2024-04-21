@@ -381,7 +381,7 @@ graph LR;
 
 3. graph with a cycle of 3 nodes, that dont start from the first node in the matrix
 ```mermaid
-graph LR;
+graph TD;
     A --> B;
     C <--> D;
     C --> A;
@@ -389,7 +389,7 @@ graph LR;
 
 4. connected graph without a cycle
 ```mermaid
-graph LR;
+graph TD;
     A --> B;
     A --> C;
     B --> C;
