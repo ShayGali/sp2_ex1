@@ -62,21 +62,65 @@ the test are very similar to the previous test, but the graph is undirected.
 
 1. first connected graph:
 ```mermaid
+    graph LR;
     A --- B;
     B --- C;
 ```
 
 2. not connected graph:
 ```mermaid
+graph TD;
     A --- B;
     A --- C;
-    B --- A;
     B --- C;
-    C --- A;
-    C --- B;
-    C --- D;
     D --- C;
     E;
 ```
 
 3. a graph with a single node, so it should be connected.
+
+### shortestPath for Directed Graph
+
+#### unweighted graph
+
+1. first graph:
+```mermaid
+    graph LR;
+    A --> B;
+    B --> C;
+```
+
+    the shortest path from `A` to `C` is `A -> B -> C`
+
+
+2. second graph:
+```mermaid
+graph LR;
+    A<-->B;
+    A<-->C;
+    B<-->C;
+    C<-->D;
+    D<-->E;
+```
+
+    the shortest path from `A` to `E` is `A -> C -> D -> E`
+    the shortest path from `A` to itself is `A`
+
+3. a graph with a no edge between the nodes, so there is no path between any two nodes.
+
+#### weighted non-negative graph
+
+1.
+
+```mermaid
+graph LR;
+    A --> |3| B;
+    B --> |1| A;
+    B --> |5| C;
+```
+
+* the shortest path from `A` to `B` is `A -> B` with a cost of `3`
+* the shortest path from `A` to `C` is `A -> B -> C` with a cost of `8`
+* the shortest path from `B` to `C` is `B -> C` with a cost of `5`
+* there is no path from `C` to `A`
+* the shortest path from `A` to `A` is `A` with a cost of `0`

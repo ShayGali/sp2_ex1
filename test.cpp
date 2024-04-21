@@ -207,21 +207,11 @@ TEST_CASE("Test shortestPath for DirectedGraph unweighted") {
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // the source and destination vertices are the same
-    vector<vector<int>> graph3 = {
-        // clang-format off
-            {NO_EDGE, 1,       1,       NO_EDGE, NO_EDGE},
-            {1,       NO_EDGE, 1,       NO_EDGE, NO_EDGE},
-            {1,       1,       NO_EDGE, 1,       NO_EDGE},
-            {NO_EDGE, NO_EDGE, 1,       NO_EDGE, 1      },
-            {NO_EDGE, NO_EDGE, NO_EDGE, 1,       NO_EDGE}
-        // clang-format on
-    };
-    g.loadGraph(graph3);
     CHECK(Algorithms::shortestPath(g, 0, 0) == "0");
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // there is no path between the source and destination vertices
-    vector<vector<int>> graph4 = {
+    vector<vector<int>> graph3 = {
         // clang-format off
                 // 0      1        2        3        4
         /* 0 */{NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE}, 
@@ -232,7 +222,7 @@ TEST_CASE("Test shortestPath for DirectedGraph unweighted") {
         // clang-format on
     };
 
-    g.loadGraph(graph4);
+    g.loadGraph(graph3);
     CHECK(Algorithms::shortestPath(g, 0, 4) == "-1");
     CHECK(Algorithms::shortestPath(g, 2, 3) == "-1");
 }
@@ -242,8 +232,8 @@ TEST_CASE("Test shortestPath for DirectedGraph weighted non-negative") {
 
     vector<vector<int>> graph = {
         // clang-format off
-        {NO_EDGE, 3, NO_EDGE},
-        {1, NO_EDGE, 5},
+        {NO_EDGE, 3      , NO_EDGE},
+        {1      , NO_EDGE, 5      },
         {NO_EDGE, NO_EDGE, NO_EDGE}
         // clang-format on
     };
