@@ -259,7 +259,7 @@ TEST_CASE("Test shortestPath for DirectedGraph weighted non-negative") {
     g.loadGraph(graph1);
     CHECK(Algorithms::shortestPath(g, 0, 1) == "0->1");
 
-    graph1[0][1] = 1000;
+    graph1[3][4] = 1;
     g.loadGraph(graph1);
     CHECK(Algorithms::shortestPath(g, 0, 1) == "0->2->3->4->1");
 }
