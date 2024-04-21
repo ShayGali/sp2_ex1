@@ -482,7 +482,25 @@ TEST_CASE("Test shortestPath for UndirectedGraph weighted non-negative") {
     CHECK((res == "0->1" || res == "0->2->3->4->1"));
 }
 
-TEST_CASE("Test shortestPath for UndirectedGraph weighted with negative weights") {}
+TEST_CASE("Test shortestPath for UndirectedGraph weighted with negative weights") {
+    UndirectedGraph g;
+
+    vector<vector<int>> graph = {
+        // clang-format off
+        {NO_EDGE, 10,     -1},
+        {10,     NO_EDGE, -5      },
+        {-1,     -5,     NO_EDGE}
+        // clang-format on
+    };
+
+    g.loadGraph(graph);
+
+    std::cout << Algorithms::negativeCycle(g) << std::endl;
+    CHECK(Algorithms::shortestPath(g, 0, 1) == "0->2->1");
+    CHECK(Algorithms::shortestPath(g, 0, 2) == "0->1->2");
+    CHECK(Algorithms::shortestPath(g, 1, 2) == "1->2");
+
+}
 
 TEST_CASE("Test isContainsCycle for DirectedGraph") {}
 

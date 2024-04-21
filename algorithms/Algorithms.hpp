@@ -6,7 +6,6 @@
 
 using std::string;
 
-
 // enum to represent the colors of the vertices (use for DFS and bipartite)
 enum Color {
     // for DFS
@@ -38,7 +37,7 @@ class Algorithms {
      *  if there is no path between the source and destination vertices, return "-1"
 
      */
-    static string shortestPath(Graph& g, int src, int dest);
+    static string shortestPath(Graph& g, size_t src, size_t dest);
 
     /**
      * @brief Check if the graph contains a cycle
@@ -62,13 +61,14 @@ class Algorithms {
      *    Otherwise, return "0".
      *
      */
-    static string negativeCycle(Graph& g);
+    static string negativeCycle(DirectedGraph& g);
+    static string negativeCycle(UndirectedGraph& g);
 
     class NegativeCycleException : public std::exception {
        public:
-        int detectedCycleStart;
+        size_t detectedCycleStart;
         vector<int> parentList;
-        NegativeCycleException(int detectedCycleStart, vector<int> parentList) {
+        NegativeCycleException(size_t detectedCycleStart, vector<int> parentList) {
             this->detectedCycleStart = detectedCycleStart;
             this->parentList = parentList;
         }
@@ -77,6 +77,4 @@ class Algorithms {
             return "Graph contains a negative-weight cycle";
         }
     };
-
-
 };

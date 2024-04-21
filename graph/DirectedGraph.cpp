@@ -16,7 +16,7 @@ void DirectedGraph::loadGraph(vector<vector<int>> ajdList) {
 
     // check if the graph is a square matrix
     // check if the diagonal of the matrix is 0
-    for (int i = 0; i < ajdList.size(); i++) {
+    for (size_t i = 0; i < ajdList.size(); i++) {
         if (ajdList.size() != ajdList[i].size()) {
             throw invalid_argument("Invalid graph: The graph is not a square matrix.");
         }
@@ -28,8 +28,8 @@ void DirectedGraph::loadGraph(vector<vector<int>> ajdList) {
     }
 
     // update the isWeighted and haveNegativeEdgeWeight fields if needed
-    for (int i = 0; i < ajdList.size(); i++) {
-        for (int j = 0; j < ajdList[i].size(); j++) {
+    for (size_t i = 0; i < ajdList.size(); i++) {
+        for (size_t j = 0; j < ajdList[i].size(); j++) {
             if (ajdList[i][j] != NO_EDGE) {
                 if (ajdList[i][j] != 1) {
                     this->isWeighted = true;
@@ -44,8 +44,8 @@ void DirectedGraph::loadGraph(vector<vector<int>> ajdList) {
 
 void DirectedGraph::printGraph() {
     int count_edges = 0;
-    for (int i = 0; i < ajdList.size(); i++) {
-        for (int j = 0; j < ajdList[i].size(); j++) {
+    for (size_t i = 0; i < ajdList.size(); i++) {
+        for (size_t j = 0; j < ajdList[i].size(); j++) {
             if (ajdList[i][j] != NO_EDGE) {
                 count_edges++;
             }
