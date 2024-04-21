@@ -62,20 +62,20 @@ the test are very similar to the previous test, but the graph is undirected.
 
 1. first connected graph:
 ```mermaid
-    A--B;
-    B--C;
+    A --- B;
+    B --- C;
 ```
 
 2. not connected graph:
 ```mermaid
-    A -- B;
-    A -- C;
-    B -- A;
-    B -- C;
-    C -- A;
-    C -- B;
-    C -- D;
-    D -- C;
+    A --- B;
+    A --- C;
+    B --- A;
+    B --- C;
+    C --- A;
+    C --- B;
+    C --- D;
+    D --- C;
     E;
 ```
 
