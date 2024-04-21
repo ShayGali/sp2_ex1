@@ -302,6 +302,10 @@ string Algorithms::negativeCycle(UndirectedGraph& g) {
     }
     return "No negative cycle";
 }
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// helper functions
+
 /**
   @brief Perform DFS on the graph
   @param g - the graph to perform DFS on
