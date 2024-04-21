@@ -362,7 +362,39 @@ graph LR;
 
 #### `isContainsCycle` for Directed Graph
 
-1.
+1. graph with a cycle of 3 nodes
+```mermaid
+graph LR;
+    A --> B;
+    B --> C;
+    C --> A;
+```
+
+2. graph with a cycle of 3 nodes
+```mermaid
+graph LR;
+    A --> B;
+    B --> C;
+    C --> D;
+    D --> B;
+```
+
+3. graph with a cycle of 3 nodes, that dont start from the first node in the matrix
+```mermaid
+graph LR;
+    A --> B;
+    C <--> D;
+    C --> A;
+```
+
+4. connected graph without a cycle
+```mermaid
+graph LR;
+    A --> B;
+    A --> C;
+    B --> C;
+
+```
 
 #### `isContainsCycle` for Undirected Graph
 
