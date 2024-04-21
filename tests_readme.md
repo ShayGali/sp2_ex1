@@ -28,14 +28,10 @@ graph LR;
 2. this graph is not connected, and looks like this:
 ```mermaid
 graph LR;
-    A-->B;
-    A-->C;
-    B-->A;
-    B-->C;
-    C-->A;
-    C-->B;
-    C-->D;
-    D-->C;
+    A<-->B;
+    A<-->C;
+    B<-->C;
+    C<-->D;
     E;
 ```
 
