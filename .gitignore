@@ -1,4 +1,5 @@
 *.o
 demo
 test
+main
 .vscode
