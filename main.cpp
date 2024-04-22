@@ -20,6 +20,6 @@ int main() {
     };
 
     g.loadGraph(graph);
-    std::cout <<Algorithms::isContainsCycle(g) << std::endl;
+    std::cout << Algorithms::isContainsCycle(g) << std::endl;
     return 0;
 }

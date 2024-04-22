@@ -252,52 +252,22 @@ string Algorithms::negativeCycle(DirectedGraph& g) {
 
 string Algorithms::negativeCycle(UndirectedGraph& g) {
     /*
-    To find a negative cycle in the graph, we will add a new vertex to the graph and connect it to all the other vertices with an edge of weight 0.
-    Then we will perform Bellman-Ford algorithm from the new vertex.
-
-    on the last part on the Bellman-Ford algorithm, if we can relax an edge, then the graph contains a negative cycle.
-
-    to get the negative cycle, we will go back with the `parents` vector until we reach the vertex we started from.
-
-    because in our graph representation, no edges have a weight of 0, in this function we will change the NO_EDGE value to INFINITY.
+    to find a negative cycle in an undirected graph we can just find one negative edge in the graph.
     */
+    if (!g.isHaveNegativeEdgeWeight()) {
+        return "No negative cycle";
+    }
 
+    // find the negative edge
     size_t n = g.getGraph().size();
-
-    // create a new graph with a new vertex
-    UndirectedGraph newGraph = UndirectedGraph();  // if the graph is undirected, we will have two edges between the each pair of vertices
-    vector<vector<int>> newGraphMat(n + 1, vector<int>(n + 1, INF));
     for (size_t i = 0; i < n; i++) {
         for (size_t j = 0; j < n; j++) {
-            if (g.getGraph()[i][j] != NO_EDGE) {
-                newGraphMat[i][j] = g.getGraph()[i][j];
+            if (g.getGraph()[i][j] < 0) {
+                return std::to_string(i) + "->" + std::to_string(j) + "->" + std::to_string(i);
             }
         }
     }
-
-    // connect the new vertex to all the other vertices with an edge of weight 0
-    for (size_t i = 0; i < n; i++) {
-        newGraphMat[n][i] = 0;
-        newGraphMat[i][n] = 0;
-    }
-
-    newGraph.loadGraph(newGraphMat);
-
-    // start Bellman-Ford algorithm from the new vertex
-    try {
-        bellmanFord(newGraph, n);
-    } catch (Algorithms::NegativeCycleException e) {  // if the graph contains a negative cycle
-        // get the negative cycle
-        string negativeCycle = std::to_string(e.detectedCycleStart);
-        size_t parent = e.detectedCycleStart;
-        while (e.parentList[parent] != e.detectedCycleStart) {
-            parent = (size_t)e.parentList[parent];
-            negativeCycle += "->" + std::to_string(parent);
-        }
-        negativeCycle += "->" + std::to_string(e.detectedCycleStart);
-        return negativeCycle;
-    }
-    return "No negative cycle";
+    throw std::runtime_error("the graph marked as have negative edge weight but no negative edge found");
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -482,8 +482,10 @@ TEST_CASE("Test shortestPath for UndirectedGraph weighted non-negative") {
     CHECK((res == "0->1" || res == "0->2->3->4->1"));
 }
 
-/*
 TEST_CASE("Test shortestPath for UndirectedGraph weighted with negative weights") {
+    /*
+    if a graph contains a negative-weight edge, the shortest path between two vertices cannot be found
+    */
     UndirectedGraph g;
 
     vector<vector<int>> graph = {
@@ -496,13 +498,8 @@ TEST_CASE("Test shortestPath for UndirectedGraph weighted with negative weights"
 
     g.loadGraph(graph);
 
-    std::cout << Algorithms::negativeCycle(g) << std::endl;
-    CHECK(Algorithms::shortestPath(g, 0, 1) == "0->2->1");
-    CHECK(Algorithms::shortestPath(g, 0, 2) == "0->1->2");
-    CHECK(Algorithms::shortestPath(g, 1, 2) == "1->2");
-
+    CHECK(Algorithms::shortestPath(g, 0, 1) == "Graph contains a negative-weight cycle");
 }
-*/
 
 TEST_CASE("Test isContainsCycle for DirectedGraph") {
     DirectedGraph g;
