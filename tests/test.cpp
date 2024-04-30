@@ -550,7 +550,15 @@ TEST_CASE("Test isContainsCycle for DirectedGraph") {
     CHECK(Algorithms::isContainsCycle(g) == false);
 }
 
-TEST_CASE("Test isContainsCycle for UndirectedGraph") {}
+TEST_CASE("Test isContainsCycle for UndirectedGraph") {
+    UndirectedGraph g;
+    vector<vector<int>> graph = {
+        {NO_EDGE, 1, NO_EDGE},
+        {1, NO_EDGE, 1},
+        {NO_EDGE, 1, NO_EDGE}};
+    g.loadGraph(graph);
+    CHECK(Algorithms::isContainsCycle(g) == false);
+}
 
 TEST_CASE("Test isBipartite for UndirectedGraph") {}
 

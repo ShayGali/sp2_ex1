@@ -44,7 +44,6 @@ to check if a directed graph is connected or not.
 we have 4 tests in this file:
 1. this graph is connected, and looks like this:
 ```mermaid
-%%{init: {'theme': 'forest' } }%%
 graph LR;
     A-->B;
     B-->C;

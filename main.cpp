@@ -9,17 +9,19 @@
 using namespace std;
 
 int main() {
-    DirectedGraph g;
+    UndirectedGraph g;
 
     vector<vector<int>> graph = {
         // clang-format off
-        {NO_EDGE, 1,       NO_EDGE},
-        {NO_EDGE, NO_EDGE, 1      },
-        {1,       NO_EDGE, NO_EDGE}
+        {NO_EDGE, 10,     -1},
+        {10,     NO_EDGE, -5},
+        {-1,     -5,     NO_EDGE}
         // clang-format on
     };
 
     g.loadGraph(graph);
-    std::cout << Algorithms::isContainsCycle(g) << std::endl;
+
+    g.loadGraph(graph);
+    std::cout << Algorithms::negativeCycle(g) << std::endl;
     return 0;
 }

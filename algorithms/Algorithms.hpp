@@ -37,14 +37,16 @@ class Algorithms {
      *  if there is no path between the source and destination vertices, return "-1"
 
      */
-    static string shortestPath(Graph& g, size_t src, size_t dest);
+    static string shortestPath(UndirectedGraph& g, size_t src, size_t dest);
+    static string shortestPath(DirectedGraph& g, size_t src, size_t dest);
 
     /**
      * @brief Check if the graph contains a cycle
      * @param g - the graph to check
      * @return true if the graph contains a cycle, false otherwise
      */
-    static bool isContainsCycle(Graph& g);
+    static bool isContainsCycle(UndirectedGraph& g);
+    static bool isContainsCycle(DirectedGraph& g);
 
     /**
      * @brief Check if the graph is bipartite
