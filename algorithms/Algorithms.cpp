@@ -8,70 +8,80 @@
 #include <utility>
 #include <vector>
 
+enum Color {
+    // for DFS
+    WHITE,
+    GRAY,
+    BLACK,
+
+    // for bipartite
+    BLUE,
+    RED
+};
+
 using std::pair;
 
-// declare the helper functions
-bool isContainsCycleUtil(UndirectedGraph& g, size_t src, vector<Color>* colors, vector<int>* parents);
-bool isContainsCycleUtil(DirectedGraph& g, size_t src, vector<Color>* colors);
+// ~~~ declare the helper functions ~~~
 vector<vector<size_t>> dfs(Graph& g);
 vector<size_t> dfs(Graph& g, size_t src, vector<Color>* colors);
-pair<vector<int>, vector<int>> bellmanFord(UndirectedGraph& g, size_t src);
-pair<vector<int>, vector<int>> bellmanFord(DirectedGraph& g, size_t src);
+
+pair<vector<int>, vector<int>> bfs(Graph& g, size_t src);
+pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src);
 pair<vector<int>, vector<int>> dijkstra(Graph& g, size_t src);
 
-bool Algorithms::isConnected(DirectedGraph& g) {
-    /*
-   The way to check if a directed graph is connected is to perform DFS twice:
+bool isContainsCycleUtil(Graph& g, size_t src, vector<Color>* colors, vector<int>* parents);
 
-   1. Perform DFS on the graph.
-   2. If the DFS discovers all the vertices, then the graph is connected. (if we got only one DFS tree)
-   3. Perform DFS on the root of the last DFS tree.
-   4. If the DFS discovers all the vertices, then the graph is connected.
+// ~~~ implement the functions ~~~
+bool Algorithms::isConnected(Graph& g) {
+    /*
+
+    to check if undirected graph is connected, we can perform DFS on the graph and check if all the vertices are discovered.
+
+    The way to check if a directed graph is connected is to perform DFS twice:
+    1. Perform DFS on the graph.
+    2. If the DFS discovers all the vertices, then the graph is connected. (if we got only one DFS tree)
+    3. Perform DFS on the root of the last DFS tree.
+    4. If the DFS discovers all the vertices, then the graph is connected.
    */
 
     vector<vector<size_t>> firstDfsTree = dfs(g);
     if (firstDfsTree.size() == 1) {
         return true;
     }
+
+    // if the graph is undirected, the second DFS is not needed
+    if (!g.isDirectedGraph()) {
+        return false;
+    }
+
     // Perform DFS on the root of the last DFS tree (the first element of the last vector in the firstDfsTree matrix
     size_t firstElementOfLastVector = firstDfsTree.back().front();
     vector<Color> colors(g.getGraph().size(), WHITE);
     vector<size_t> secondDfsTree = dfs(g, firstElementOfLastVector, &colors);
     return secondDfsTree.size() == g.getGraph().size();
-    return false;
 }
 
-bool Algorithms::isConnected(UndirectedGraph& g) {
-    /*
-   The way to check if an undirected graph is connected is to perform DFS on the graph:
-
-   1. Perform DFS on the graph.
-   2. If the DFS discovers all the vertices, then the graph is connected.
-   */
-
-    vector<vector<size_t>> dfsTree = dfs(g);
-
-    return dfsTree.size() == 1;
-}
-
-string Algorithms::shortestPath(DirectedGraph& g, size_t src, size_t dest) {
+string Algorithms::shortestPath(Graph& g, size_t src, size_t dest) {
     if (src == dest) {
         return std::to_string(src);
     }
 
     pair<vector<int>, vector<int>> shortestPathResult;
 
-    if (g.isHaveNegativeEdgeWeight()) {
-        // do Bellman-Ford and return the path
+    // if the graph is not weighted, we can use BFS to find the shortest path
+    if (!g.isWeightedGraph()) {
+        shortestPathResult = bfs(g, src);
+    } else if (g.isHaveNegativeEdgeWeight()) {  // if the graph has negative edge weights, we can use Bellman-Ford algorithm
         try {
             shortestPathResult = bellmanFord(g, src);
-        } catch (Algorithms::NegativeCycleException e) {
+        } catch (Algorithms::NegativeCycleException& e) {
             return e.what();
         }
-    } else {
-        // do Dijkstra and return the path
+    } else {  // if the graph has non-negative edge weights, we can use Dijkstra's algorithm
         shortestPathResult = dijkstra(g, src);
     }
+
+    // get the shortest path from the src to the dest
     vector<int> distances = shortestPathResult.first;
     vector<int> parents = shortestPathResult.second;
     // if the distance to the destination vertex is infinity, then there is no path between the source and destination vertices
@@ -86,45 +96,11 @@ string Algorithms::shortestPath(DirectedGraph& g, size_t src, size_t dest) {
         path = std::to_string(parent) + "->" + path;
         parent = parents[(size_t)parent];
     }
+
     return path;
 }
 
-string Algorithms::shortestPath(UndirectedGraph& g, size_t src, size_t dest) {
-    if (src == dest) {
-        return std::to_string(src);
-    }
-
-    pair<vector<int>, vector<int>> shortestPathResult;
-
-    if (g.isHaveNegativeEdgeWeight()) {
-        // do Bellman-Ford and return the path
-        try {
-            shortestPathResult = bellmanFord(g, src);
-        } catch (Algorithms::NegativeCycleException e) {
-            return e.what();
-        }
-    } else {
-        // do Dijkstra and return the path
-        shortestPathResult = dijkstra(g, src);
-    }
-    vector<int> distances = shortestPathResult.first;
-    vector<int> parents = shortestPathResult.second;
-    // if the distance to the destination vertex is infinity, then there is no path between the source and destination vertices
-    if (distances[dest] == INF) {
-        return "-1";
-    }
-
-    // create the path from the source to the destination
-    string path = std::to_string(dest);
-    int parent = parents[dest];
-    while (parent != -1) {
-        path = std::to_string(parent) + "->" + path;
-        parent = parents[(size_t)parent];
-    }
-    return path;
-}
-
-bool Algorithms::isContainsCycle(UndirectedGraph& g) {
+bool Algorithms::isContainsCycle(Graph& g) {
     /*
     To check if the graph contains a cycle, we can perform DFS on the graph and check if there is a back edge in the graph.
     */
@@ -138,56 +114,6 @@ bool Algorithms::isContainsCycle(UndirectedGraph& g) {
             }
         }
     }
-    return false;
-}
-
-bool isContainsCycleUtil(UndirectedGraph& g, size_t src, vector<Color>* colors, vector<int>* parents) {
-    (*colors)[src] = GRAY;
-    for (size_t v = 0; v < g.getGraph().size(); v++) {
-        if (g.getGraph()[src][v] != NO_EDGE) {
-            if ((*colors)[v] == WHITE) {
-                (*parents)[v] = (int)src;
-                if (isContainsCycleUtil(g, v, colors, parents)) {
-                    return true;
-                }
-            } else if ((*colors)[v] == GRAY && v != (*parents)[src]) {
-                return true;
-            }
-        }
-    }
-    (*colors)[src] = BLACK;
-    return false;
-}
-
-bool Algorithms::isContainsCycle(DirectedGraph& g) {
-    /*
-    To check if the graph contains a cycle, we can perform DFS on the graph and check if there is a back edge in the graph.
-    */
-    vector<Color> colors(g.getGraph().size(), WHITE);
-    for (size_t i = 0; i < g.getGraph().size(); i++) {
-        if (colors[i] == WHITE) {
-            if (isContainsCycleUtil(g, i, &colors)) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-bool isContainsCycleUtil(DirectedGraph& g, size_t src, vector<Color>* colors) {
-    (*colors)[src] = GRAY;
-    for (size_t v = 0; v < g.getGraph().size(); v++) {
-        if (g.getGraph()[src][v] != NO_EDGE) {
-            if ((*colors)[v] == GRAY) {
-                return true;
-            } else if ((*colors)[v] == WHITE) {
-                if (isContainsCycleUtil(g, v, colors)) {
-                    return true;
-                }
-            }
-        }
-    }
-    (*colors)[src] = BLACK;
     return false;
 }
 
@@ -274,7 +200,7 @@ string Algorithms::isBipartite(Graph& g) {
     return result;
 }
 
-string Algorithms::negativeCycle(DirectedGraph& g) {
+string Algorithms::negativeCycle(Graph& g) {
     /*
     To find a negative cycle in the graph, we will add a new vertex to the graph and connect it to all the other vertices with an edge of weight 0.
     Then we will perform Bellman-Ford algorithm from the new vertex.
@@ -289,7 +215,8 @@ string Algorithms::negativeCycle(DirectedGraph& g) {
     size_t n = g.getGraph().size();
 
     // create a new graph with a new vertex
-    DirectedGraph newGraph = DirectedGraph();
+    Graph newGraph = Graph(g.isDirectedGraph());
+
     vector<vector<int>> newGraphMat(n + 1, vector<int>(n + 1, INF));
     for (size_t i = 0; i < n; i++) {
         for (size_t j = 0; j < n; j++) {
@@ -302,6 +229,7 @@ string Algorithms::negativeCycle(DirectedGraph& g) {
     // connect the new vertex to all the other vertices with an edge of weight 0
     for (size_t i = 0; i < n; i++) {
         newGraphMat[n][i] = 0;
+        newGraphMat[i][n] = 0; // //TODO: check if we need to be NO_EDGE
     }
 
     newGraph.loadGraph(newGraphMat);
@@ -323,67 +251,9 @@ string Algorithms::negativeCycle(DirectedGraph& g) {
     return "No negative cycle";
 }
 
-string Algorithms::negativeCycle(UndirectedGraph& g) {
-    size_t n = g.getGraph().size();
+// ~~~ implement the helper functions ~~~
 
-    // create a new graph with a new vertex
-    UndirectedGraph newGraph = UndirectedGraph();
-    vector<vector<int>> newGraphMat(n + 1, vector<int>(n + 1, INF));
-    for (size_t i = 0; i < n; i++) {
-        for (size_t j = i + 1; j < n; j++) {
-            if (g.getGraph()[i][j] != NO_EDGE) {
-                newGraphMat[i][j] = g.getGraph()[i][j];
-                newGraphMat[j][i] = g.getGraph()[i][j];
-            }
-        }
-    }
-
-    // connect the new vertex to all the other vertices with an edge of weight 0
-    for (size_t i = 0; i < n; i++) {
-        newGraphMat[n][i] = 0;
-        newGraphMat[i][n] = 0;
-    }
-
-    newGraph.loadGraph(newGraphMat);
-
-    // start Bellman-Ford algorithm from the new vertex
-    try {
-        bellmanFord(newGraph, n);
-    } catch (Algorithms::NegativeCycleException e) {  // if the graph contains a negative cycle
-        // get the negative cycle
-        size_t cycleStart = e.detectedCycleStart;
-        int cycleEnd = e.parentList[(size_t)cycleStart];
-        size_t maxIterations = n + 1;
-        while (cycleEnd != cycleStart && maxIterations > 0) {
-            cycleStart = (size_t)cycleEnd;
-            cycleEnd = e.parentList[cycleStart];
-            maxIterations--;
-        }
-
-        if (maxIterations == 0) {
-            return "Error: Cycle detection failed";
-        }
-
-        string negativeCycle = std::to_string(cycleStart);
-        int parent = e.parentList[cycleStart];
-        maxIterations = n + 1;
-        while (parent != cycleStart && maxIterations > 0) {
-            negativeCycle += "->" + std::to_string(parent);
-            parent = e.parentList[(size_t)parent];
-            maxIterations--;
-        }
-
-        if (maxIterations == 0) {
-            return "Error: Cycle detection failed";
-        }
-
-        negativeCycle += "->" + std::to_string(cycleStart);
-        return negativeCycle;
-    }
-    return "No negative cycle";
-}
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// helper functions
+// ~ DFS ~
 
 /**
   @brief Perform DFS on the graph
@@ -407,6 +277,7 @@ vector<vector<size_t>> dfs(Graph& g) {
     }
     return dfsTree;
 }
+
 /**
  * @brief Perform DFS from a given source vertex
  * @param g - the graph to perform DFS on
@@ -446,60 +317,36 @@ vector<size_t> dfs(Graph& g, size_t src, vector<Color>* colors) {
     return dfsOrder;
 };
 
-/**
- * @brief Perform Bellman-Ford algorithm from a given source vertex
- * @param g - the graph to perform Bellman-Ford algorithm on
- * @param src - the source vertex to start Bellman-Ford algorithm from
- * @return a pair of two vectors:
- * 1. the first vector contains the distance from the source vertex to each vertex in the graph
- * 2. the second vector contains the parent of each vertex in the graph in the BFS tree
- * @throws NegativeCycleException if the graph contains a negative-weight cycle
- */
-pair<vector<int>, vector<int>> bellmanFord(UndirectedGraph& g, size_t src) {
-    /*
-    we relax the eged twice, once from u to v and once from v to u
-    */
+// ~ Shortest Path algorithms ~
+pair<vector<int>, vector<int>> bfs(Graph& g, size_t src) {
     size_t n = g.getGraph().size();
+
+    // init the distances and parents vectors
     vector<int> distances(n, INF);
     vector<int> parents(n, -1);
 
+    // add the source vertex to the queue and set its distance to 0
     distances[src] = 0;
-    // relax all edges n-1 times
-    for (size_t i = 0; i < n - 1; i++) {
-        // for each edge (u, v) in the graph
-        for (size_t u = 0; u < n; u++) {
-            for (size_t v = u + 1; v < n; v++) {
-                // if there is an edge between u and v
-                if (g.getGraph()[u][v] != NO_EDGE) {
-                    // relax the edge
-                    if (distances[u] + g.getGraph()[u][v] < distances[v]) {
-                        distances[v] = distances[u] + g.getGraph()[u][v];
-                        parents[v] = (int)u;
-                    }
-                    if (distances[v] + g.getGraph()[u][v] < distances[u]) {
-                        distances[u] = distances[v] + g.getGraph()[u][v];
-                        parents[u] = (int)v;
-                    }
-                }
-            }
-        }
-    }
+    std::queue<size_t> q;
+    q.push(src);
 
-    // check for negative-weight cycles
-    for (size_t u = 0; u < n; u++) {
-        for (size_t v = u + 1; v < n; v++) {
+    while (!q.empty()) {
+        size_t u = q.front();
+        q.pop();
+        for (size_t v = 0; v < n; v++) {
             if (g.getGraph()[u][v] != NO_EDGE) {
-                if (distances[u] + g.getGraph()[u][v] < distances[v] || distances[v] + g.getGraph()[u][v] < distances[u]) {
-                    throw Algorithms::NegativeCycleException(u, parents);
+                if (distances[v] == INF) {  // if the vertex is not discovered yet
+                    distances[v] = distances[u] + 1;
+                    parents[v] = (int)u;
+                    q.push(v);
                 }
             }
         }
     }
 
-    return std::make_pair(distances, parents);
+    return {distances, parents};
 }
-
-pair<vector<int>, vector<int>> bellmanFord(DirectedGraph& g, size_t src) {
+pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src) {
     size_t n = g.getGraph().size();
     vector<int> distances(n, INF);
     vector<int> parents(n, -1);
@@ -512,6 +359,11 @@ pair<vector<int>, vector<int>> bellmanFord(DirectedGraph& g, size_t src) {
             for (size_t v = 0; v < n; v++) {
                 // if there is an edge between u and v
                 if (g.getGraph()[u][v] != NO_EDGE) {
+                    // if the graph is undirected, we should ignore the edge that connects the current vertex to its parent
+                    if (!g.isDirectedGraph() && parents[u] == (int)v) {
+                        continue;
+                    }
+
                     // relax the edge
                     if (distances[u] + g.getGraph()[u][v] < distances[v]) {
                         distances[v] = distances[u] + g.getGraph()[u][v];
@@ -535,7 +387,6 @@ pair<vector<int>, vector<int>> bellmanFord(DirectedGraph& g, size_t src) {
 
     return std::make_pair(distances, parents);
 }
-
 /**
  * @brief Perform Dijkstra's algorithm from a given source vertex
  * @param g - the graph to perform Dijkstra's algorithm on (must be a non-negative weighted graph)
@@ -584,4 +435,27 @@ pair<vector<int>, vector<int>> dijkstra(Graph& g, size_t src) {
     }
 
     return make_pair(distances, parents);
+}
+
+// ~ Cycle detection ~
+bool isContainsCycleUtil(Graph& g, size_t src, vector<Color>* colors, vector<int>* parents) {
+    (*colors)[src] = GRAY;
+    for (size_t v = 0; v < g.getGraph().size(); v++) {
+        if (g.getGraph()[src][v] != NO_EDGE) {
+            if ((*colors)[v] == WHITE) {
+                (*parents)[v] = (int)src;
+                if (isContainsCycleUtil(g, v, colors, parents)) {
+                    return true;
+                }
+            } else if ((*colors)[v] == GRAY) {  // check if there is a back edge
+                // if the graph is undirected, we should ignore the edge that connects the current vertex to its parent
+                if (!g.isDirectedGraph() && (*parents)[src] == (int)v) {
+                    continue;
+                }
+                return true;
+            }
+        }
+    }
+    (*colors)[src] = BLACK;
+    return false;
 }

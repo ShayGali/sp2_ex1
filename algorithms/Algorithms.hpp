@@ -1,22 +1,8 @@
 #include <string>
 
-#include "../graph/DirectedGraph.hpp"
 #include "../graph/Graph.hpp"
-#include "../graph/UndirectedGraph.hpp"
 
 using std::string;
-
-// enum to represent the colors of the vertices (use for DFS and bipartite)
-enum Color {
-    // for DFS
-    WHITE,
-    GRAY,
-    BLACK,
-
-    // for bipartite
-    BLUE,
-    RED
-};
 
 class Algorithms {
    public:
@@ -25,8 +11,7 @@ class Algorithms {
      * @param g - the graph to check
      * @return true if the graph is connected, false otherwise
      */
-    static bool isConnected(DirectedGraph& g);
-    static bool isConnected(UndirectedGraph& g);
+    static bool isConnected(Graph& g);
 
     /**
      * @brief Find the shortest path between two vertices
@@ -35,18 +20,15 @@ class Algorithms {
      * @param dest - the destination vertex
      * @return the shortest path between the source and destination vertices in the format "src->...->dest".
      *  if there is no path between the source and destination vertices, return "-1"
-
      */
-    static string shortestPath(UndirectedGraph& g, size_t src, size_t dest);
-    static string shortestPath(DirectedGraph& g, size_t src, size_t dest);
+    static string shortestPath(Graph& g, size_t src, size_t dest);
 
     /**
      * @brief Check if the graph contains a cycle
      * @param g - the graph to check
      * @return true if the graph contains a cycle, false otherwise
      */
-    static bool isContainsCycle(UndirectedGraph& g);
-    static bool isContainsCycle(DirectedGraph& g);
+    static bool isContainsCycle(Graph& g);
 
     /**
      * @brief Check if the graph is bipartite
@@ -63,8 +45,7 @@ class Algorithms {
      *    Otherwise, return "0".
      *
      */
-    static string negativeCycle(DirectedGraph& g);
-    static string negativeCycle(UndirectedGraph& g);
+    static string negativeCycle(Graph& g);
 
     class NegativeCycleException : public std::exception {
        public:

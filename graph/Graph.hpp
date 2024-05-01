@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 using std::vector;
 
 #define INF std::numeric_limits<int>::max()  // represent infinity
@@ -10,22 +11,24 @@ using std::vector;
  * @brief an abstract class that represents a graph as an adjacency matrix
  */
 class Graph {
-   public:
-    Graph();
-    virtual vector<vector<int>> getGraph();
-    bool isWeightedGraph();
-    bool isHaveNegativeEdgeWeight();
-
-    // abstract methods
-
-    /**
-     * @brief load the graph from an adjacency list.
-    */
-    virtual void loadGraph(vector<vector<int>> ajdList) = 0;
-    virtual void printGraph() = 0;
-
-   protected:
+   private:
     vector<vector<int>> ajdList;
+    bool isDirected;
     bool isWeighted;
     bool haveNegativeEdgeWeight;
+
+   public:
+    /**
+     * @brief Construct a new Graph object
+     * @param isDirected whether the graph is directed or not. Default is false.
+     */
+    Graph(bool isDirected = false);
+
+    virtual vector<vector<int>> getGraph();
+    void loadGraph(vector<vector<int>> ajdList);
+    void printGraph();
+
+    bool isDirectedGraph();
+    bool isWeightedGraph();
+    bool isHaveNegativeEdgeWeight();
 };

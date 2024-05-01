@@ -2,14 +2,12 @@
 #include <vector>
 
 #include "algorithms/Algorithms.hpp"
-#include "graph/DirectedGraph.hpp"
 #include "graph/Graph.hpp"
-#include "graph/UndirectedGraph.hpp"
 
 using namespace std;
 
 int main() {
-    UndirectedGraph g;
+    Graph g(false);
 
     vector<vector<int>> graph = {
         // clang-format off
@@ -19,7 +17,6 @@ int main() {
         // clang-format on
     };
 
-    g.loadGraph(graph);
 
     g.loadGraph(graph);
     std::cout << Algorithms::negativeCycle(g) << std::endl;

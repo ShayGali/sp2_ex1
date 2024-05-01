@@ -4,7 +4,7 @@ CXXFLAGS=-std=c++2a -g -Werror -Wsign-conversion # c++20
 VALGRIND_FLAGS=-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
 
 
-SOURCES=graph/Graph.cpp graph/DirectedGraph.cpp graph/UndirectedGraph.cpp algorithms/Algorithms.cpp
+SOURCES=graph/Graph.cpp algorithms/Algorithms.cpp
 OBJECTS=$(subst .cpp,.o,$(SOURCES)) # replace .cpp with .o in SOURCES
 
 .PHONY: run clean test graph algorithms
