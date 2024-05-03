@@ -24,10 +24,10 @@ class Graph {
      */
     Graph(bool isDirected = false);
 
-    vector<vector<int>> getGraph();
     void loadGraph(vector<vector<int>> ajdList);
     void printGraph();
 
+    vector<vector<int>> getGraph();
     bool isDirectedGraph();
     bool isWeightedGraph();
     bool isHaveNegativeEdgeWeight();

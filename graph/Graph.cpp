@@ -4,8 +4,12 @@
 #include <stdexcept>
 
 using std::invalid_argument;
+
 Graph::Graph(bool isDirected) {
     this->isDirected = isDirected;
+
+    // by default, the graph is not weighted and does not have negative edge weight
+    // will be updated in the loadGraph method
     this->isWeighted = false;
     this->haveNegativeEdgeWeight = false;
 }
@@ -70,17 +74,9 @@ void Graph::printGraph() {
     }
 }
 
-vector<vector<int>> Graph::getGraph() {
-    return this->ajdList;
-}
+vector<vector<int>> Graph::getGraph() { return this->ajdList; }
 
-bool Graph::isDirectedGraph() {
-    return this->isDirected;
-}
-bool Graph::isWeightedGraph() {
-    return this->isWeighted;
-}
+bool Graph::isDirectedGraph() { return this->isDirected; }
+bool Graph::isWeightedGraph() { return this->isWeighted; }
 
-bool Graph::isHaveNegativeEdgeWeight() {
-    return this->haveNegativeEdgeWeight;
-}
+bool Graph::isHaveNegativeEdgeWeight() { return this->haveNegativeEdgeWeight; }

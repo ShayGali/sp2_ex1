@@ -9,7 +9,7 @@
 using namespace std;
 
 TEST_CASE("Test loadGraph for Directed Graph") {
-    Graph g = Graph(true);
+    Graph g(true);
     vector<vector<int>> graph = {
         // clang-format off
             {NO_EDGE, 1,       1      },
@@ -44,7 +44,7 @@ TEST_CASE("Test loadGraph for Directed Graph") {
 }
 
 TEST_CASE("Test loadGraph for UndirectedGraph") {
-    Graph g = Graph(false);
+    Graph g(false);
     vector<vector<int>> graph = {
         // clang-format off
             {NO_EDGE, 1,       1      },
@@ -90,7 +90,7 @@ TEST_CASE("Test loadGraph for UndirectedGraph") {
 }
 
 TEST_CASE("Test isConnected for DirectedGraph") {
-    Graph g = Graph(true);
+    Graph g(true);
     /*
     0-->1-->2
     */
@@ -140,7 +140,7 @@ TEST_CASE("Test isConnected for DirectedGraph") {
 }
 
 TEST_CASE("Test isConnected for UndirectedGraph") {
-    Graph g = Graph(false);
+    Graph g(false);
     /*
     0---1---2
     */
@@ -174,7 +174,7 @@ TEST_CASE("Test isConnected for UndirectedGraph") {
 }
 
 TEST_CASE("Test shortestPath for DirectedGraph unweighted") {
-    Graph g = Graph(true);
+    Graph g(true);
     /*
     0-->1-->2
     */
@@ -226,7 +226,7 @@ TEST_CASE("Test shortestPath for DirectedGraph unweighted") {
 }
 
 TEST_CASE("Test shortestPath for DirectedGraph weighted non-negative") {
-    Graph g = Graph(true);
+    Graph g(true);
 
     vector<vector<int>> graph = {
         // clang-format off
@@ -263,7 +263,7 @@ TEST_CASE("Test shortestPath for DirectedGraph weighted non-negative") {
 }
 
 TEST_CASE("Test shortestPath for DirectedGraph weighted with negative weights") {
-    Graph g = Graph(true);
+    Graph g(true);
 
     vector<vector<int>> graph = {
         // clang-format off
@@ -327,7 +327,7 @@ TEST_CASE("Test shortestPath for DirectedGraph weighted with negative weights") 
 }
 
 TEST_CASE("Test shortestPath for UndirectedGraph unweighted") {
-    Graph g = Graph(false);
+    Graph g(false);
     /*
     0---1---2
     */
@@ -413,7 +413,7 @@ TEST_CASE("Test shortestPath for UndirectedGraph unweighted") {
 };
 
 TEST_CASE("Test shortestPath for UndirectedGraph weighted non-negative") {
-    Graph g = Graph(false);
+    Graph g(false);
 
     vector<vector<int>> graph = {
         // clang-format off
@@ -484,7 +484,7 @@ TEST_CASE("Test shortestPath for UndirectedGraph weighted with negative weights"
     /*
     if a graph contains a negative-weight edge, the shortest path between two vertices cannot be found
     */
-    Graph g = Graph(false);
+    Graph g(false);
 
     vector<vector<int>> graph = {
         // clang-format off
@@ -500,7 +500,7 @@ TEST_CASE("Test shortestPath for UndirectedGraph weighted with negative weights"
 }
 
 TEST_CASE("Test isContainsCycle for DirectedGraph") {
-    Graph g = Graph(true);
+    Graph g(true);
 
     vector<vector<int>> graph = {
         // clang-format off
@@ -573,7 +573,7 @@ TEST_CASE("Test isContainsCycle for DirectedGraph") {
 }
 
 TEST_CASE("Test isContainsCycle for UndirectedGraph") {
-    Graph g = Graph(false);
+    Graph g(false);
     vector<vector<int>> graph = {
         // clang-format off
         {NO_EDGE, 1      , NO_EDGE},
@@ -612,7 +612,7 @@ TEST_CASE("Test isBipartite for undirected graph") {
 }
 
 // TEST_CASE("Test isBipartite for directed graph") {
-//     Graph g = Graph(true);
+//     Graph g(true);
 //     // 0 <-- 1
 //     vector<vector<int>> graph = {
 //         // clang-format off
