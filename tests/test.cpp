@@ -511,7 +511,7 @@ TEST_CASE("Test isContainsCycle for DirectedGraph") {
     };
 
     g.loadGraph(graph);
-    CHECK(Algorithms::isContainsCycle(g) == true);
+    CHECK(Algorithms::isContainsCycle(g) == "0->1->2->0");
 
     vector<vector<int>> graph2 = {
         // clang-format off
@@ -523,7 +523,7 @@ TEST_CASE("Test isContainsCycle for DirectedGraph") {
     };
 
     g.loadGraph(graph2);
-    CHECK(Algorithms::isContainsCycle(g) == true);
+    CHECK(Algorithms::isContainsCycle(g) == "1->2->3->1");
 
     vector<vector<int>> graph3 = {
         // clang-format off
@@ -535,7 +535,7 @@ TEST_CASE("Test isContainsCycle for DirectedGraph") {
     };
 
     g.loadGraph(graph3);
-    CHECK(Algorithms::isContainsCycle(g) == true);
+    CHECK(Algorithms::isContainsCycle(g) == "2->3->2");
 
     vector<vector<int>> graph4 = {
         // clang-format off
@@ -545,21 +545,83 @@ TEST_CASE("Test isContainsCycle for DirectedGraph") {
         // clang-format on
     };
     g.loadGraph(graph4);
-    CHECK(Algorithms::isContainsCycle(g) == false);
+    CHECK(Algorithms::isContainsCycle(g) == "-1");
+
+    vector<vector<int>> graph5 = {
+        // clang-format off
+        {NO_EDGE, 1      , 2         ,NO_EDGE, NO_EDGE},
+        {1      , NO_EDGE, 3         ,NO_EDGE, NO_EDGE},
+        {2      , 3      , NO_EDGE   ,4      , NO_EDGE},
+        {NO_EDGE, NO_EDGE, 4         ,NO_EDGE, 5      },
+        {NO_EDGE, NO_EDGE, NO_EDGE   ,5      , NO_EDGE}
+        // clang-format on
+    };
+    g.loadGraph(graph5);
+    CHECK(Algorithms::isContainsCycle(g) == "0->1->0");
+
+
+    vector<vector<int>> graph6 = {
+        // clang-format off
+        {NO_EDGE, NO_EDGE, NO_EDGE, 1      },
+        {NO_EDGE, NO_EDGE, 1      , NO_EDGE},
+        {1      , NO_EDGE, NO_EDGE, NO_EDGE},
+        {NO_EDGE, 1      , NO_EDGE, NO_EDGE}
+        // clang-format on
+    };
+    g.loadGraph(graph6);
+    CHECK(Algorithms::isContainsCycle(g) == "0->3->1->2->0");
 }
 
 TEST_CASE("Test isContainsCycle for UndirectedGraph") {
     Graph g = Graph(false);
     vector<vector<int>> graph = {
-        {NO_EDGE, 1, NO_EDGE},
-        {1, NO_EDGE, 1},
-        {NO_EDGE, 1, NO_EDGE}};
+        // clang-format off
+        {NO_EDGE, 1      , NO_EDGE},
+        {1      , NO_EDGE, 1      },
+        {NO_EDGE, 1      , NO_EDGE}
+        // clang-format on
+    };
     g.loadGraph(graph);
-    CHECK(Algorithms::isContainsCycle(g) == false);
+    CHECK(Algorithms::isContainsCycle(g) == "-1");
+
+    vector<vector<int>> graph2 = {
+        // clang-format off
+        {NO_EDGE, 1      , 1      },
+        {1      , NO_EDGE, 1      },
+        {1      , 1      , NO_EDGE}
+        // clang-format on
+    };
+    g.loadGraph(graph2);
+    CHECK(Algorithms::isContainsCycle(g) == "0->1->2->0");
+
+    vector<vector<int>> graph3 = {
+        // clang-format off
+    {NO_EDGE, 1      , NO_EDGE, NO_EDGE},
+    {1      , NO_EDGE, 1      , 1      },
+    {NO_EDGE, 1      , NO_EDGE, 1      },
+    {NO_EDGE, 1      , 1      , NO_EDGE}
+        // clang-format on
+    };
+    g.loadGraph(graph3);
+    CHECK(Algorithms::isContainsCycle(g) == "1->2->3->1");
+
+    
 }
 
-TEST_CASE("Test isBipartite for UndirectedGraph") {}
+TEST_CASE("Test isBipartite for undirected graph") {
+}
 
-TEST_CASE("Test isBipartite for DirectedGraph") {}
+// TEST_CASE("Test isBipartite for directed graph") {
+//     Graph g = Graph(true);
+//     // 0 <-- 1
+//     vector<vector<int>> graph = {
+//         // clang-format off
+//         {NO_EDGE,NO_EDGE},
+//         {1      ,NO_EDGE}
+//         // clang-format on
+//     };
+//     g.loadGraph(graph);
+//     CHECK(Algorithms::isBipartite(g) == "The graph is bipartite: A={0}, B={1}");
+// }
 
 TEST_CASE("Test negativeCycle for DirectedGraph") {}

@@ -28,7 +28,7 @@ class Algorithms {
      * @param g - the graph to check
      * @return true if the graph contains a cycle, false otherwise
      */
-    static bool isContainsCycle(Graph& g);
+    static string isContainsCycle(Graph& g);
 
     /**
      * @brief Check if the graph is bipartite

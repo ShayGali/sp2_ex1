@@ -397,13 +397,69 @@ graph TD;
 
 ```
 
+1. graph with a cycle of 3 nodes
+
+we have more then one cycle in this graph.
+
+```mermaid
+graph TD;
+    A --> B;
+    A --> C;
+    B --> A;
+    B --> C;
+    C --> A;
+    C --> B;
+    D --> C;
+    D --> E;
+    E --> D;
+```
+
 #### `isContainsCycle` for Undirected Graph
 
+> as mentioned before, this is **not** considered a cycle in an undirected graph.
 
+```mermaid
+graph LR;
+    A --- B;
+```
+
+
+1. graph without a cycle
+    
+```mermaid
+graph LR;
+    A --- B;
+    B --- C;
+```
+
+2. graph with cycle
+    
+```mermaid
+graph LR;
+    A --- B;
+    B --- C;
+    C --- A;
+```
+
+3. graph with cycle that dont start from the first node in the matrix
+    
+```mermaid
+graph LR;
+    A --- B;
+    B --- C;
+    C --- D;
+    D --- B;
+```
 <hr>
 
 
 #### `isBipartite` for Directed Graph
+
+1. a bipartite graph, that the coloring can fail if we dont color in the right way.
+```mermaid
+graph LR;
+    B --> A;
+```
 
 #### `isBipartite` for Undirected Graph
 

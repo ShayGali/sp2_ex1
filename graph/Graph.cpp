@@ -9,6 +9,7 @@ Graph::Graph(bool isDirected) {
     this->isWeighted = false;
     this->haveNegativeEdgeWeight = false;
 }
+
 void Graph::loadGraph(vector<vector<int>> ajdList) {
     // Create a deep copy of the adjacency matrix
     vector<vector<int>> ajdListCopy = ajdList;

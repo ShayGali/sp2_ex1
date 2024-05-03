@@ -19,9 +19,12 @@ enum Color {
     RED
 };
 
-using std::pair;
+using std::pair, std::vector, std::queue, std::string;
 
 // ~~~ declare the helper functions ~~~
+
+string constructCyclePath(vector<int>& path, int start);
+
 vector<vector<size_t>> dfs(Graph& g);
 vector<size_t> dfs(Graph& g, size_t src, vector<Color>* colors);
 
@@ -29,7 +32,7 @@ pair<vector<int>, vector<int>> bfs(Graph& g, size_t src);
 pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src);
 pair<vector<int>, vector<int>> dijkstra(Graph& g, size_t src);
 
-bool isContainsCycleUtil(Graph& g, size_t src, vector<Color>* colors, vector<int>* parents);
+string isContainsCycleUtil(Graph& g, size_t src, vector<Color>* colors, vector<int>* parents, vector<int>* path);
 
 // ~~~ implement the functions ~~~
 bool Algorithms::isConnected(Graph& g) {
@@ -62,6 +65,10 @@ bool Algorithms::isConnected(Graph& g) {
 }
 
 string Algorithms::shortestPath(Graph& g, size_t src, size_t dest) {
+    if (src >= g.getGraph().size() || src < 0 || dest >= g.getGraph().size() || dest < 0) {
+        throw std::invalid_argument("Invalid source or destination vertex");
+    }
+
     if (src == dest) {
         return std::to_string(src);
     }
@@ -100,103 +107,79 @@ string Algorithms::shortestPath(Graph& g, size_t src, size_t dest) {
     return path;
 }
 
-bool Algorithms::isContainsCycle(Graph& g) {
-    /*
-    To check if the graph contains a cycle, we can perform DFS on the graph and check if there is a back edge in the graph.
-    */
+string Algorithms::isContainsCycle(Graph& g) {
     vector<Color> colors(g.getGraph().size(), WHITE);
     vector<int> parents(g.getGraph().size(), -1);
+    vector<int> path;
 
     for (size_t i = 0; i < g.getGraph().size(); i++) {
         if (colors[i] == WHITE) {
-            if (isContainsCycleUtil(g, i, &colors, &parents)) {
-                return true;
+            string cycle = isContainsCycleUtil(g, i, &colors, &parents, &path);
+            if (!cycle.empty()) {
+                return cycle;
             }
         }
     }
-    return false;
+    return "-1";
 }
 
 string Algorithms::isBipartite(Graph& g) {
     /*
-    To check if a graph is bipartite, we will perform DFS on the graph and color the vertices in two colors.
-    If in some point we discover a vertex that is colored with the same color as its parent, then the graph is not bipartite.
+    To check if a graph is bipartite, we will perform BFS on the graph and color the vertices in two colors.
+    If in some point we discover a vertex that is colored with the same color as its parent, then the graph is not bipartite.
 
-    in the end, we will return the two sets of vertices, according to the colors of the vertices.
-    */
+    in the end, we will return the two sets of vertices, according to the colors of the vertices.
+    */
 
     size_t n = g.getGraph().size();
     // create a list of colors for the vertices
     vector<Color> colors(n, WHITE);
-
-    // create a stack to store the vertices (instead of recursion)
-    vector<size_t> stack;
-
     // create two sets of vertices
-    vector<size_t> setA;
     vector<size_t> setB;
+    vector<size_t> setR;
 
-    // start loop over all vertices
-    for (size_t i = 0; i < n; i++) {
-        if (colors[i] == WHITE) {
-            // do DFS from vertex i
-            stack.push_back(i);
-            colors[i] = RED;
-            setA.push_back(i);
-            while (!stack.empty()) {
-                // get the last vertex from the stack
-                size_t u = stack.back();
-                stack.pop_back();
-                // check the color of the vertex
-                if (colors[u] == RED) {
-                    // loop over the neighbors of the vertex and color them
-                    for (size_t v = 0; v < n; v++) {
-                        if (g.getGraph()[u][v] != NO_EDGE) {
-                            // if there is an edge between u and v, and v not discovered yet
-                            if (colors[v] == WHITE) {
-                                colors[v] = BLUE;
-                                setB.push_back(v);
-                                stack.push_back(v);
-                            } else if (colors[v] == RED) {  // if v is discovered and colored with the same color as u the graph is not bipartite
-                                return "0";
-                            }
-                        }
-                    }
-                } else if (colors[u] == BLUE) {
-                    for (size_t v = 0; v < n; v++) {
-                        if (g.getGraph()[u][v] != NO_EDGE) {
-                            if (colors[v] == WHITE) {
-                                colors[v] = RED;
-                                setA.push_back(v);
-                                stack.push_back(v);
-                            } else if (colors[v] == BLUE) {
-                                return "0";
-                            }
-                        }
+    // start BFS from the first vertex
+    vector<size_t> queue;
+    queue.push_back(0);
+    colors[0] = BLUE;
+    setB.push_back(0);
+
+    while (queue.size() != 0) {
+        size_t u = queue.back();
+        for (size_t v = 0; v < n; v++) {
+            if (g.getGraph()[u][v] != NO_EDGE) {
+                if (colors[v] == colors[u]) {
+                    return "0";  // the graph is not bipartite
+                }
+                if (colors[v] == WHITE) {
+                    if (colors[u] == BLUE) {
+                        colors[v] = RED;
+                        setR.push_back(v);
+                    } else {
+                        colors[v] = BLUE;
+                        setB.push_back(v);
                     }
                 }
+                queue.push_back(v);
             }
         }
     }
-
     // create the result string
     string result = "The graph is bipartite: A={";
-    for (size_t i = 0; i < setA.size() - 1; i++) {
-        result += std::to_string(setA[i]);
-        if (i != setA.size() - 1) {
-            result += ", ";
-        }
-    }
-    result += std::to_string(setA.back()) + "}, B={";
-
     for (size_t i = 0; i < setB.size() - 1; i++) {
         result += std::to_string(setB[i]);
         if (i != setB.size() - 1) {
             result += ", ";
         }
     }
-
-    result += std::to_string(setB.back()) + "}";
+    result += std::to_string(setB.back()) + "}, B={";
+    for (size_t i = 0; i < setR.size() - 1; i++) {
+        result += std::to_string(setR[i]);
+        if (i != setR.size() - 1) {
+            result += ", ";
+        }
+    }
+    result += std::to_string(setR.back()) + "}";
     return result;
 }
 
@@ -229,7 +212,7 @@ string Algorithms::negativeCycle(Graph& g) {
     // connect the new vertex to all the other vertices with an edge of weight 0
     for (size_t i = 0; i < n; i++) {
         newGraphMat[n][i] = 0;
-        newGraphMat[i][n] = 0; // //TODO: check if we need to be NO_EDGE
+        newGraphMat[i][n] = 0;  // //TODO: check if we need to be NO_EDGE
     }
 
     newGraph.loadGraph(newGraphMat);
@@ -438,24 +421,73 @@ pair<vector<int>, vector<int>> dijkstra(Graph& g, size_t src) {
 }
 
 // ~ Cycle detection ~
-bool isContainsCycleUtil(Graph& g, size_t src, vector<Color>* colors, vector<int>* parents) {
+
+/**
+ * @brief Check if the graph contains a cycle
+ * @param g - the graph to check
+ * @param src - the source vertex to start the DFS from
+ * @param colors - colors of the vertices
+ * @param parents - the parent of each vertex in the DFS tree
+ * @param path - a vector to store sequence of vertices visited in during the DFS.
+ * @return the cycle path in the format "v1->v2->...->v1" if a cycle is detected, otherwise return an empty string
+ */
+string isContainsCycleUtil(Graph& g, size_t src, vector<Color>* colors, vector<int>* parents, vector<int>* path) {
+    /*
+    the path vector is used to store the sequence of vertices visited during the DFS.
+    when  a vertex is visited, it is added to the path.
+    when all the adjacent vertices of a vertex have been visited, the vertex is removed from the path.
+    if a cycle is detected, the path at that point in time represents the cycle.
+    the end of the cycle is the vertex that is being visited when the cycle is detected. (start of the cycle is the same as the end of the cycle)
+    */
+
     (*colors)[src] = GRAY;
+    path->push_back(src);  // add the vertex to the path
+
+    // loop over all the neighbors of the vertex
     for (size_t v = 0; v < g.getGraph().size(); v++) {
         if (g.getGraph()[src][v] != NO_EDGE) {
             if ((*colors)[v] == WHITE) {
+                // dfs on the neighbor
                 (*parents)[v] = (int)src;
-                if (isContainsCycleUtil(g, v, colors, parents)) {
-                    return true;
+                string cycle = isContainsCycleUtil(g, v, colors, parents, path);
+                if (!cycle.empty()) {  // if a cycle is detected
+                    return cycle;
                 }
-            } else if ((*colors)[v] == GRAY) {  // check if there is a back edge
+            } else if ((*colors)[v] == GRAY) {  // if the neighbor is gray, then we have a cycle
                 // if the graph is undirected, we should ignore the edge that connects the current vertex to its parent
                 if (!g.isDirectedGraph() && (*parents)[src] == (int)v) {
                     continue;
                 }
-                return true;
+                // construct the cycle path
+                return constructCyclePath(*path, v);
             }
         }
     }
-    (*colors)[src] = BLACK;
-    return false;
+    (*colors)[src] = BLACK;  // the vertex is done, mark it as black
+    path->pop_back();        // remove the vertex from the path because we are done with it
+    return "";
+}
+
+/**
+ * @brief Build the cycle path from the path vector
+ * @param path - the path vector - used to store the sequence of vertices visited during the DFS when a cycle is detected
+ * @param start - the start/end of the cycle (start == end)
+ * @return the cycle path in the format "v1->v2->...->v1"
+ */
+string constructCyclePath(vector<int>& path, int start) {
+    string cycle = "";
+    size_t v = 0;
+    // find the start of the cycle in the path
+    for (v = 0; v < path.size(); v++) {
+        if (path[v] == start) {
+            break;
+        }
+    }
+    // we start from the start of the cycle, until the end of the path (when the cycle is detected)
+    for (size_t i = v; i < path.size(); i++) {
+        cycle += std::to_string(path[i]) + "->";
+    }
+
+    cycle += std::to_string(start);  // to complete the cycle
+    return cycle;
 }
