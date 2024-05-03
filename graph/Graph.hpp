@@ -24,7 +24,7 @@ class Graph {
      */
     Graph(bool isDirected = false);
 
-    virtual vector<vector<int>> getGraph();
+    vector<vector<int>> getGraph();
     void loadGraph(vector<vector<int>> ajdList);
     void printGraph();
 
