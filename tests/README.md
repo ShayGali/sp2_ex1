@@ -28,8 +28,8 @@ there are 3 tests in this file:
 1. test if the graph is loaded correctly
 2. pass a non square matrix so the function should raise `invalid_argument` exception
 3. pass a matrix that have a non `NO_EDGE` value on the main diagonal so the function should raise `invalid_argument` exception
-
-
+4. pass an empty matrix that represent an empty graph (no vertices and no edges)
+   
 ### `loadGraph` for Undirected Graph
 smae as the previous test but for an undirected graph.
 in this test case I added a test to check if the matrix is symmetric or not.
@@ -61,7 +61,7 @@ graph LR;
 
     we can see that the the node 4 is not connected to any other node.
 
-1. a graph with a single node, so it should be connected.
+3. a graph with a single node, so it should be connected.
 
 
 4. a graph that a have one root, what he not the first node in the matrix (so the dfs will not start from him), the function should return true.
@@ -75,6 +75,9 @@ graph LR;
 
     in this graph the node `D` is the root, and the dfs will start from the node `A`.
 
+5.  an empty graph, so it should be connected.
+   
+
 ### `isConnected` for Undirected Graph
 in undirected graph the function should return true if the graph is connected, and false otherwise.
 
@@ -87,7 +90,7 @@ the test are very similar to the previous test, but the graph is undirected.
     B --- C;
 ```
 
-1. not connected graph:
+2. not connected graph:
 ```mermaid
 graph TD;
     A --- B;
@@ -97,13 +100,27 @@ graph TD;
     E;
 ```
 
-1. a graph with a single node, so it should be connected.
+3. a graph with a single node, so it should be connected.
+```mermaid
+graph TD;
+    A;
+```
+
+4. an empty graph, so it should be connected.
 
 <hr>
 
-### `shortestPath` for Directed Graph
+### shortestPath
 
-#### unweighted graph
+#### exceptions checks
+
+in this test case we will check that the function will throw an exception the source node or the destination node are invalid.
+
+<hr>
+
+#### `shortestPath` for Directed Graph
+
+##### unweighted graph
 
 1. first graph:
 ```mermaid
@@ -130,7 +147,9 @@ graph LR;
 
 3. a graph with a no edge between the nodes, so there is no path between any two nodes.
 
-#### weighted non-negative graph
+4. send an invalid node to the function, so the function should raise an exception. (we cant send a negative node to the function)
+
+##### weighted non-negative graph
 
 1.
 
@@ -170,7 +189,7 @@ graph LR;
 ```
     the shortest path from `A` to `B` is `A -> C -> D -> E -> B` with a cost of `77`
 
-#### weighted negative graph
+##### weighted negative graph
 1.
 
 ```mermaid
@@ -238,9 +257,9 @@ graph LR;
 
 <hr>
 
-### `shortestPath` for Undirected Graph
+#### `shortestPath` for Undirected Graph
 
-#### unweighted graph
+##### unweighted graph
 1. first graph:
 ```mermaid
     graph LR;
@@ -348,7 +367,7 @@ graph LR;
 
     the shortest path from `A` to `B` is `A -> B` with a cost of `100` or `A -> C -> D -> E -> B` with a cost of `100`
 
-#### weighted negative graph
+##### weighted negative graph
 1. 
 ```mermaid
 graph LR;
@@ -360,7 +379,7 @@ graph LR;
 
 <hr>
 
-#### `isContainsCycle` for Directed Graph
+### `isContainsCycle` for Directed Graph
 
 1. graph with a cycle of 3 nodes
 ```mermaid
@@ -414,7 +433,7 @@ graph TD;
     E --> D;
 ```
 
-#### `isContainsCycle` for Undirected Graph
+### `isContainsCycle` for Undirected Graph
 
 > as mentioned before, this is **not** considered a cycle in an undirected graph.
 
@@ -453,7 +472,7 @@ graph LR;
 <hr>
 
 
-#### `isBipartite` for Directed Graph
+### `isBipartite` for Directed Graph
 
 1. a bipartite graph, that the coloring can fail if we dont color in the right way.
 ```mermaid
@@ -461,10 +480,10 @@ graph LR;
     B --> A;
 ```
 
-#### `isBipartite` for Undirected Graph
+### `isBipartite` for Undirected Graph
 
 <hr>
 
-#### `negativeCycle` for Directed Graph
+### `negativeCycle` for Directed Graph
 
-#### `negativeCycle` for Undirected Graph
+### `negativeCycle` for Undirected Graph

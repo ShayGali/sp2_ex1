@@ -8,6 +8,8 @@
 
 using namespace std;
 
+// TODO: add test cases for empty graph
+
 TEST_CASE("Test loadGraph for Directed Graph") {
     Graph g(true);
     vector<vector<int>> graph = {
@@ -41,9 +43,14 @@ TEST_CASE("Test loadGraph for Directed Graph") {
         // clang-format on
     };
     CHECK_THROWS_AS(g.loadGraph(graph3), invalid_argument);
+
+    // empty graph
+    vector<vector<int>> graph4 = {};
+    g.loadGraph(graph4);
+    CHECK(std::equal(graph4.begin(), graph4.end(), g.getGraph().begin()));
 }
 
-TEST_CASE("Test loadGraph for UndirectedGraph") {
+TEST_CASE("Test loadGraph for undirected graph") {
     Graph g(false);
     vector<vector<int>> graph = {
         // clang-format off
@@ -87,9 +94,13 @@ TEST_CASE("Test loadGraph for UndirectedGraph") {
         // clang-format on
     };
     CHECK_THROWS_AS(g.loadGraph(graph4), invalid_argument);
+    // empty graph
+    vector<vector<int>> graph5 = {};
+    g.loadGraph(graph5);
+    CHECK(std::equal(graph5.begin(), graph5.end(), g.getGraph().begin()));
 }
 
-TEST_CASE("Test isConnected for DirectedGraph") {
+TEST_CASE("Test isConnected for directed graph") {
     Graph g(true);
     /*
     0-->1-->2
@@ -137,9 +148,15 @@ TEST_CASE("Test isConnected for DirectedGraph") {
 
     g.loadGraph(graph4);
     CHECK(Algorithms::isConnected(g) == true);
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // empty graph is connected
+    vector<vector<int>> graph5 = {};
+    g.loadGraph(graph5);
+    CHECK(Algorithms::isConnected(g) == true);
 }
 
-TEST_CASE("Test isConnected for UndirectedGraph") {
+TEST_CASE("Test isConnected for undirected graph") {
     Graph g(false);
     /*
     0---1---2
@@ -171,9 +188,35 @@ TEST_CASE("Test isConnected for UndirectedGraph") {
     vector<vector<int>> graph3 = {{NO_EDGE}};
     g.loadGraph(graph3);
     CHECK(Algorithms::isConnected(g) == true);
+
+    // empty graph is connected
+    vector<vector<int>> graph4 = {};
+    g.loadGraph(graph4);
+    CHECK(Algorithms::isConnected(g) == true);
 }
 
-TEST_CASE("Test shortestPath for DirectedGraph unweighted") {
+TEST_CASE("Error check shortestPath") {
+    Graph g(true);
+    vector<vector<int>> graph = {
+        // clang-format off
+            {NO_EDGE, 1,       1      },
+            {1,       NO_EDGE, 1      },
+            {1,       1,       NO_EDGE}
+        // clang-format on
+    };
+    g.loadGraph(graph);
+
+    // destination vertex is not in the graph
+    CHECK_THROWS_AS(Algorithms::shortestPath(g, 0, 3), invalid_argument);
+
+    // source vertex is not in the graph
+    CHECK_THROWS_AS(Algorithms::shortestPath(g, 3, 1), invalid_argument);
+
+    // source and destination vertices are not in the graph
+    CHECK_THROWS_AS(Algorithms::shortestPath(g, 12, 3), invalid_argument);
+}
+
+TEST_CASE("Test shortestPath for directed graph unweighted") {
     Graph g(true);
     /*
     0-->1-->2
@@ -225,7 +268,7 @@ TEST_CASE("Test shortestPath for DirectedGraph unweighted") {
     CHECK(Algorithms::shortestPath(g, 2, 3) == "-1");
 }
 
-TEST_CASE("Test shortestPath for DirectedGraph weighted non-negative") {
+TEST_CASE("Test shortestPath for directed graph weighted non-negative") {
     Graph g(true);
 
     vector<vector<int>> graph = {
@@ -262,7 +305,7 @@ TEST_CASE("Test shortestPath for DirectedGraph weighted non-negative") {
     CHECK(Algorithms::shortestPath(g, 0, 1) == "0->2->3->4->1");
 }
 
-TEST_CASE("Test shortestPath for DirectedGraph weighted with negative weights") {
+TEST_CASE("Test shortestPath for directed graph weighted with negative weights") {
     Graph g(true);
 
     vector<vector<int>> graph = {
@@ -326,7 +369,7 @@ TEST_CASE("Test shortestPath for DirectedGraph weighted with negative weights") 
     CHECK(Algorithms::shortestPath(g, 0, 1) == "Graph contains a negative-weight cycle");
 }
 
-TEST_CASE("Test shortestPath for UndirectedGraph unweighted") {
+TEST_CASE("Test shortestPath for undirected graph unweighted") {
     Graph g(false);
     /*
     0---1---2
@@ -412,7 +455,7 @@ TEST_CASE("Test shortestPath for UndirectedGraph unweighted") {
     CHECK(Algorithms::shortestPath(g, 1, 0) == "1->0");
 };
 
-TEST_CASE("Test shortestPath for UndirectedGraph weighted non-negative") {
+TEST_CASE("Test shortestPath for undirected graph weighted non-negative") {
     Graph g(false);
 
     vector<vector<int>> graph = {
@@ -480,7 +523,7 @@ TEST_CASE("Test shortestPath for UndirectedGraph weighted non-negative") {
     CHECK((res == "0->1" || res == "0->2->3->4->1"));
 }
 
-TEST_CASE("Test shortestPath for UndirectedGraph weighted with negative weights") {
+TEST_CASE("Test shortestPath for undirected graph weighted with negative weights") {
     /*
     if a graph contains a negative-weight edge, the shortest path between two vertices cannot be found
     */
@@ -499,7 +542,7 @@ TEST_CASE("Test shortestPath for UndirectedGraph weighted with negative weights"
     CHECK(Algorithms::shortestPath(g, 0, 1) == "Graph contains a negative-weight cycle");
 }
 
-TEST_CASE("Test isContainsCycle for DirectedGraph") {
+TEST_CASE("Test isContainsCycle for directed graph") {
     Graph g(true);
 
     vector<vector<int>> graph = {
@@ -559,7 +602,6 @@ TEST_CASE("Test isContainsCycle for DirectedGraph") {
     g.loadGraph(graph5);
     CHECK(Algorithms::isContainsCycle(g) == "0->1->0");
 
-
     vector<vector<int>> graph6 = {
         // clang-format off
         {NO_EDGE, NO_EDGE, NO_EDGE, 1      },
@@ -572,7 +614,7 @@ TEST_CASE("Test isContainsCycle for DirectedGraph") {
     CHECK(Algorithms::isContainsCycle(g) == "0->3->1->2->0");
 }
 
-TEST_CASE("Test isContainsCycle for UndirectedGraph") {
+TEST_CASE("Test isContainsCycle for undirected graph") {
     Graph g(false);
     vector<vector<int>> graph = {
         // clang-format off
@@ -604,8 +646,6 @@ TEST_CASE("Test isContainsCycle for UndirectedGraph") {
     };
     g.loadGraph(graph3);
     CHECK(Algorithms::isContainsCycle(g) == "1->2->3->1");
-
-    
 }
 
 TEST_CASE("Test isBipartite for undirected graph") {
@@ -624,4 +664,4 @@ TEST_CASE("Test isBipartite for undirected graph") {
 //     CHECK(Algorithms::isBipartite(g) == "The graph is bipartite: A={0}, B={1}");
 // }
 
-TEST_CASE("Test negativeCycle for DirectedGraph") {}
+TEST_CASE("Test negativeCycle for directed graph") {}

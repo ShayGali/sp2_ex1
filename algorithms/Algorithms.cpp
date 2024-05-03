@@ -47,6 +47,11 @@ bool Algorithms::isConnected(Graph& g) {
     4. If the DFS discovers all the vertices, then the graph is connected.
    */
 
+    // check if the graph is empty
+    if (g.getGraph().size() == 0) {
+        return true;
+    }
+
     vector<vector<size_t>> firstDfsTree = dfs(g);
     if (firstDfsTree.size() == 1) {
         return true;
@@ -65,7 +70,7 @@ bool Algorithms::isConnected(Graph& g) {
 }
 
 string Algorithms::shortestPath(Graph& g, size_t src, size_t dest) {
-    if (src >= g.getGraph().size() || src < 0 || dest >= g.getGraph().size() || dest < 0) {
+    if (src >= g.getGraph().size() || dest >= g.getGraph().size()) {
         throw std::invalid_argument("Invalid source or destination vertex");
     }
 
