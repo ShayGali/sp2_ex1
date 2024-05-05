@@ -60,8 +60,7 @@ void Graph::loadGraph(vector<vector<int>> ajdList) {
 void Graph::printGraph() {
     int count_edges = 0;
     for (size_t i = 0; i < ajdList.size(); i++) {
-        // only count the upper triangle of the matrix
-        for (size_t j = i + 1; j < ajdList[i].size(); j++) {
+        for (size_t j = 0; j < ajdList[i].size(); j++) {
             if (ajdList[i][j] != NO_EDGE) {
                 count_edges++;
             }

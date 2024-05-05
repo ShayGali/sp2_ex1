@@ -525,21 +525,34 @@ TEST_CASE("Test shortestPath for undirected graph weighted non-negative") {
 
 TEST_CASE("Test shortestPath for undirected graph weighted with negative weights") {
     /*
-    if a graph contains a negative-weight edge, the shortest path between two vertices cannot be found
+    A -(-10)- B
+    this graph dont have a negative cycle
     */
     Graph g(false);
 
     vector<vector<int>> graph = {
         // clang-format off
-        {NO_EDGE, 10,     -1},
-        {10,     NO_EDGE, -5      },
-        {-1,     -5,     NO_EDGE}
+        {NO_EDGE, -10}, 
+        {-10,    NO_EDGE}
         // clang-format on
     };
 
     g.loadGraph(graph);
 
-    CHECK(Algorithms::shortestPath(g, 0, 1) == "Graph contains a negative-weight cycle");
+    CHECK(Algorithms::shortestPath(g, 0, 1) == "0->1");
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // graph with a negative cycle
+    vector<vector<int>> graph1 = {
+        // clang-format off
+        {NO_EDGE, -1,      1     },
+        {-1,     NO_EDGE, -1     },
+        {1,      -1,      NO_EDGE}
+        // clang-format on
+    };
+
+    g.loadGraph(graph1);
+    CHECK(Algorithms::shortestPath(g, 0, 2) == "Graph contains a negative-weight cycle");
 }
 
 TEST_CASE("Test isContainsCycle for directed graph") {
@@ -665,3 +678,6 @@ TEST_CASE("Test isBipartite for undirected graph") {
 // }
 
 TEST_CASE("Test negativeCycle for directed graph") {}
+
+TEST_CASE("Test printGraph") {
+}

@@ -366,6 +366,10 @@ pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src) {
     for (size_t u = 0; u < n; u++) {
         for (size_t v = 0; v < n; v++) {
             if (g.getGraph()[u][v] != NO_EDGE) {
+                // if the graph is undirected, we should ignore the edge that connects the current vertex to its parent
+                if (!g.isDirectedGraph() && parents[u] == (int)v) {
+                    continue;
+                }
                 if (distances[u] + g.getGraph()[u][v] < distances[v]) {
                     throw Algorithms::NegativeCycleException(u, parents);
                 }
