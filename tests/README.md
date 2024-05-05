@@ -482,6 +482,26 @@ graph LR;
 
 ### `isBipartite` for Undirected Graph
 
+
+1.
+```mermaid
+graph LR;
+    A --- B;
+    A --- D;
+    A --- C;
+    B --- C;
+    C --- D;
+```
+
+2.
+
+```mermaid
+graph LR;
+    A --- B;
+    A --- D;
+    B --- C;
+    C --- D;
+```
 <hr>
 
 ### `negativeCycle` for Directed Graph

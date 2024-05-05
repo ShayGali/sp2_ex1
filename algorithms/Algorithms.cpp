@@ -134,7 +134,27 @@ string Algorithms::isBipartite(Graph& g) {
     If in some point we discover a vertex that is colored with the same color as its parent, then the graph is not bipartite.
 
     in the end, we will return the two sets of vertices, according to the colors of the vertices.
+
+    if the graph is directed, we will convert it to an undirected graph and then perform the algorithm. 
     */
+
+    if (g.isDirectedGraph()) {
+        Graph undirectedGraph;
+        // convert the directed graph to an undirected graph
+        vector<vector<int>> adjMatrix = g.getGraph();
+
+        // make the graph symmetric
+        for (size_t i = 0; i < adjMatrix.size(); i++) {
+            for (size_t j = 0; j < adjMatrix.size(); j++) {
+                if (adjMatrix[i][j] != NO_EDGE) {
+                    adjMatrix[j][i] = adjMatrix[i][j];
+                }
+            }
+        }
+
+        undirectedGraph.loadGraph(adjMatrix);
+        g = undirectedGraph;
+    }
 
     size_t n = g.getGraph().size();
     // create a list of colors for the vertices
@@ -144,17 +164,18 @@ string Algorithms::isBipartite(Graph& g) {
     vector<size_t> setR;
 
     // start BFS from the first vertex
-    vector<size_t> queue;
-    queue.push_back(0);
+    queue<size_t> q;
+    q.push(0);
     colors[0] = BLUE;
-    setB.push_back(0);
+    setB.push_back(0); // add the first vertex to the blue set
 
-    while (queue.size() != 0) {
-        size_t u = queue.back();
-        for (size_t v = 0; v < n; v++) {
+    while (q.size() != 0) {
+        size_t u = q.front();
+        q.pop();
+        for (size_t v = 0; v < n; v++) { // loop over the neighbors of the vertex
             if (g.getGraph()[u][v] != NO_EDGE) {
                 if (colors[v] == colors[u]) {
-                    return "0";  // the graph is not bipartite
+                    return "The graph is not bipartite";
                 }
                 if (colors[v] == WHITE) {
                     if (colors[u] == BLUE) {
@@ -164,24 +185,25 @@ string Algorithms::isBipartite(Graph& g) {
                         colors[v] = BLUE;
                         setB.push_back(v);
                     }
+                q.push(v); // add the vertex to the queue (this is the first time we discover it)
                 }
-                queue.push_back(v);
             }
         }
     }
+
     // create the result string
     string result = "The graph is bipartite: A={";
     for (size_t i = 0; i < setB.size() - 1; i++) {
         result += std::to_string(setB[i]);
         if (i != setB.size() - 1) {
-            result += ", ";
+            result += ",";
         }
     }
     result += std::to_string(setB.back()) + "}, B={";
     for (size_t i = 0; i < setR.size() - 1; i++) {
         result += std::to_string(setR[i]);
         if (i != setR.size() - 1) {
-            result += ", ";
+            result += ",";
         }
     }
     result += std::to_string(setR.back()) + "}";

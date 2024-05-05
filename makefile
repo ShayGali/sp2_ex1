@@ -1,4 +1,3 @@
-
 CXX=clang++-9
 CXXFLAGS=-std=c++2a -g -Werror -Wsign-conversion # c++20
 VALGRIND_FLAGS=-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
@@ -20,11 +19,11 @@ $(PROG): $(PROG).o $(OBJECTS)
 
 test: 
 	make -C tests test
-	./tests/test
 
 
 graph:
 	make -C graph all
+
 
 algorithms:
 	make -C algorithms all

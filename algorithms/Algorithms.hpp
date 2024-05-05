@@ -34,7 +34,7 @@ class Algorithms {
      * @brief Check if the graph is bipartite
      * @param g - the graph to check
      * @return If the graph is bipartite, return "The graph is bipartite: A={...}, B={...}". (the ... represents the vertices in the set)
-     *     Otherwise, return "0".
+     *     Otherwise, return "The graph is not bipartite".
      */
     static string isBipartite(Graph& g);
 

@@ -6,8 +6,6 @@
 #include "../graph/Graph.hpp"
 #include "doctest.h"
 
-using namespace std;
-
 // TODO: add test cases for empty graph
 
 TEST_CASE("Test loadGraph for Directed Graph") {
@@ -31,7 +29,7 @@ TEST_CASE("Test loadGraph for Directed Graph") {
             {1,       NO_EDGE, 1}
         // clang-format on
     };
-    CHECK_THROWS_AS(g.loadGraph(graph2), invalid_argument);
+    CHECK_THROWS_AS(g.loadGraph(graph2), std::invalid_argument);
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // the diagonal of the matrix is not NO_EDGE
@@ -42,7 +40,7 @@ TEST_CASE("Test loadGraph for Directed Graph") {
             {1,       1,       NO_EDGE}
         // clang-format on
     };
-    CHECK_THROWS_AS(g.loadGraph(graph3), invalid_argument);
+    CHECK_THROWS_AS(g.loadGraph(graph3), std::invalid_argument);
 
     // empty graph
     vector<vector<int>> graph4 = {};
@@ -71,7 +69,7 @@ TEST_CASE("Test loadGraph for undirected graph") {
             {1,       NO_EDGE, 1}
         // clang-format on
     };
-    CHECK_THROWS_AS(g.loadGraph(graph2), invalid_argument);
+    CHECK_THROWS_AS(g.loadGraph(graph2), std::invalid_argument);
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // the diagonal of the matrix is not NO_EDGE
@@ -82,7 +80,7 @@ TEST_CASE("Test loadGraph for undirected graph") {
             {1,       1,       NO_EDGE}
         // clang-format on
     };
-    CHECK_THROWS_AS(g.loadGraph(graph3), invalid_argument);
+    CHECK_THROWS_AS(g.loadGraph(graph3), std::invalid_argument);
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // non-symmetric matrix will cause an exception
@@ -93,7 +91,7 @@ TEST_CASE("Test loadGraph for undirected graph") {
             {1,       1,       NO_EDGE}
         // clang-format on
     };
-    CHECK_THROWS_AS(g.loadGraph(graph4), invalid_argument);
+    CHECK_THROWS_AS(g.loadGraph(graph4), std::invalid_argument);
     // empty graph
     vector<vector<int>> graph5 = {};
     g.loadGraph(graph5);
@@ -207,13 +205,13 @@ TEST_CASE("Error check shortestPath") {
     g.loadGraph(graph);
 
     // destination vertex is not in the graph
-    CHECK_THROWS_AS(Algorithms::shortestPath(g, 0, 3), invalid_argument);
+    CHECK_THROWS_AS(Algorithms::shortestPath(g, 0, 3), std::invalid_argument);
 
     // source vertex is not in the graph
-    CHECK_THROWS_AS(Algorithms::shortestPath(g, 3, 1), invalid_argument);
+    CHECK_THROWS_AS(Algorithms::shortestPath(g, 3, 1), std::invalid_argument);
 
     // source and destination vertices are not in the graph
-    CHECK_THROWS_AS(Algorithms::shortestPath(g, 12, 3), invalid_argument);
+    CHECK_THROWS_AS(Algorithms::shortestPath(g, 12, 3), std::invalid_argument);
 }
 
 TEST_CASE("Test shortestPath for directed graph unweighted") {
@@ -662,6 +660,31 @@ TEST_CASE("Test isContainsCycle for undirected graph") {
 }
 
 TEST_CASE("Test isBipartite for undirected graph") {
+    Graph g(false);
+
+    vector<vector<int>> graph = {
+        // clang-format off
+        {NO_EDGE, 1      , 1      ,1      },
+        {1      , NO_EDGE, 1      ,NO_EDGE},
+        {1      , 1      , NO_EDGE,1      },
+        {1      , NO_EDGE, 1      ,NO_EDGE}
+        // clang-format on
+    };
+    g.loadGraph(graph);
+
+    CHECK(Algorithms::isBipartite(g) == "The graph is not bipartite");
+
+    vector<vector<int>> graph2 = {
+        // clang-format off
+        {NO_EDGE, 1      , NO_EDGE,1      },
+        {1      , NO_EDGE, NO_EDGE,NO_EDGE},
+        {NO_EDGE, NO_EDGE, NO_EDGE,1      },
+        {1      , NO_EDGE, 1      ,NO_EDGE}
+        // clang-format on
+    };
+    g.loadGraph(graph2);
+
+    CHECK(Algorithms::isBipartite(g) == "The graph is bipartite: A={0,2}, B={1,3}");
 }
 
 // TEST_CASE("Test isBipartite for directed graph") {
@@ -675,6 +698,42 @@ TEST_CASE("Test isBipartite for undirected graph") {
 //     };
 //     g.loadGraph(graph);
 //     CHECK(Algorithms::isBipartite(g) == "The graph is bipartite: A={0}, B={1}");
+
+//     // 0 <-- 1 <-- 2
+//     vector<vector<int>> graph2 = {
+//         // clang-format off
+//         {NO_EDGE,NO_EDGE,NO_EDGE},
+//         {1      ,NO_EDGE,NO_EDGE},
+//         {NO_EDGE,1      ,NO_EDGE}
+//         // clang-format on
+//     };
+
+//     g.loadGraph(graph2);
+//     CHECK(Algorithms::isBipartite(g) == "The graph is bipartite: A={0,2}, B={1}");
+
+//     // 0 <-- 1 --> 2
+//     vector<vector<int>> graph3 = {
+//         // clang-format off
+//         {NO_EDGE,NO_EDGE,NO_EDGE},
+//         {1      ,NO_EDGE,1     },
+//         {NO_EDGE,NO_EDGE,NO_EDGE}
+//         // clang-format on
+//     };
+
+//     g.loadGraph(graph3);
+//     CHECK(Algorithms::isBipartite(g) == "The graph is bipartite: A={0,2}, B={1}");
+
+//     // triangle
+//     vector<vector<int>> graph4 = {
+//         // clang-format off
+//         {NO_EDGE,1      ,NO_EDGE},
+//         {NO_EDGE,NO_EDGE,1     },
+//         {1      ,NO_EDGE,NO_EDGE}
+//         // clang-format on
+//     };
+
+//     g.loadGraph(graph4);
+//     CHECK(Algorithms::isBipartite(g) == "The graph is not bipartite");
 // }
 
 TEST_CASE("Test negativeCycle for directed graph") {}
