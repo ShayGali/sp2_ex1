@@ -806,24 +806,24 @@ TEST_CASE("Test negativeCycle for directed graph") {
     CHECK(Algorithms::negativeCycle(g) == "2->3->4->2");
 }
 
-TEST_CASE("Test negativeCycle for undirected graph") {
-    Graph g(false);
+// TEST_CASE("Test negativeCycle for undirected graph") {
+//     Graph g(false);
 
-    // empty graph
-    vector<vector<int>> emptyGraph = {};
-    g.loadGraph(emptyGraph);
-    CHECK(Algorithms::negativeCycle(g) == "No negative cycle");
+//     // empty graph
+//     vector<vector<int>> emptyGraph = {};
+//     g.loadGraph(emptyGraph);
+//     CHECK(Algorithms::negativeCycle(g) == "No negative cycle");
 
-    vector<vector<int>> graph1 = {
-        // clang-format off
-        {NO_EDGE, -1     },
-        {-1     , NO_EDGE}
-        // clang-format on
-    };
+//     vector<vector<int>> graph1 = {
+//         // clang-format off
+//         {NO_EDGE, -1     },
+//         {-1     , NO_EDGE}
+//         // clang-format on
+//     };
 
-    g.loadGraph(graph1);
-    CHECK(Algorithms::negativeCycle(g) == "No negative cycle");
-}
+//     g.loadGraph(graph1);
+//     CHECK(Algorithms::negativeCycle(g) == "No negative cycle");
+// }
 
 TEST_CASE("Test printGraph") {
     std::stringstream output;

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string>
 
 #include "../graph/Graph.hpp"
@@ -11,7 +12,7 @@ class Algorithms {
      * @param g - the graph to check
      * @return true if the graph is connected, false otherwise
      */
-    static bool isConnected(Graph& g);
+    static bool isConnected(const Graph& g);
 
     /**
      * @brief Find the shortest path between two vertices
@@ -21,14 +22,14 @@ class Algorithms {
      * @return the shortest path between the source and destination vertices in the format "src->...->dest".
      *  if there is no path between the source and destination vertices, return "-1"
      */
-    static string shortestPath(Graph& g, size_t src, size_t dest);
+    static string shortestPath(const Graph& g, size_t src, size_t dest);
 
     /**
      * @brief Check if the graph contains a cycle
      * @param g - the graph to check
      * @return true if the graph contains a cycle, false otherwise
      */
-    static string isContainsCycle(Graph& g);
+    static string isContainsCycle(const Graph& g);
 
     /**
      * @brief Check if the graph is bipartite
@@ -36,7 +37,7 @@ class Algorithms {
      * @return If the graph is bipartite, return "The graph is bipartite: A={...}, B={...}". (the ... represents the vertices in the set)
      *     Otherwise, return "The graph is not bipartite".
      */
-    static string isBipartite(Graph& g);
+    static string isBipartite(const Graph& g);
 
     /**
      * @brief Find the negative cycle in the graph
@@ -45,7 +46,7 @@ class Algorithms {
      *    Otherwise, return "0".
      *
      */
-    static string negativeCycle(Graph& g);
+    static string negativeCycle(const Graph& g);
 
     class NegativeCycleException : public std::exception {
        public:

@@ -26,17 +26,17 @@ using std::pair, std::vector, std::queue, std::string;
 
 string constructCyclePath(vector<int>& path, int start);
 
-vector<vector<size_t>> dfs(Graph& g);
-vector<size_t> dfs(Graph& g, size_t src, vector<Color>* colors);
+vector<vector<size_t>> dfs(const Graph& g);
+vector<size_t> dfs(const Graph& g, size_t src, vector<Color>* colors);
 
-pair<vector<int>, vector<int>> bfs(Graph& g, size_t src);
-pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src);
-pair<vector<int>, vector<int>> dijkstra(Graph& g, size_t src);
+pair<vector<int>, vector<int>> bfs(const Graph& g, size_t src);
+pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src);
+pair<vector<int>, vector<int>> dijkstra(const Graph& g, size_t src);
 
-string isContainsCycleUtil(Graph& g, size_t src, vector<Color>* colors, vector<int>* parents, vector<int>* path);
+string isContainsCycleUtil(const Graph& g, size_t src, vector<Color>* colors, vector<int>* parents, vector<int>* path);
 
 // ~~~ implement the functions ~~~
-bool Algorithms::isConnected(Graph& g) {
+bool Algorithms::isConnected(const Graph& g) {
     /*
 
     to check if undirected graph is connected, we can perform DFS on the graph and check if all the vertices are discovered.
@@ -47,7 +47,6 @@ bool Algorithms::isConnected(Graph& g) {
     3. Perform DFS on the root of the last DFS tree.
     4. If the DFS discovers all the vertices, then the graph is connected.
    */
-
     // check if the graph is empty
     if (g.getGraph().size() == 0) {
         return true;
@@ -70,7 +69,7 @@ bool Algorithms::isConnected(Graph& g) {
     return secondDfsTree.size() == g.getGraph().size();
 }
 
-string Algorithms::shortestPath(Graph& g, size_t src, size_t dest) {
+string Algorithms::shortestPath(const Graph& g, size_t src, size_t dest) {
     if (src >= g.getGraph().size() || dest >= g.getGraph().size()) {
         throw std::invalid_argument("Invalid source or destination vertex");
     }
@@ -113,7 +112,7 @@ string Algorithms::shortestPath(Graph& g, size_t src, size_t dest) {
     return path;
 }
 
-string Algorithms::isContainsCycle(Graph& g) {
+string Algorithms::isContainsCycle(const Graph& g) {
     vector<Color> colors(g.getGraph().size(), WHITE);
     vector<int> parents(g.getGraph().size(), -1);
     vector<int> path;
@@ -129,7 +128,7 @@ string Algorithms::isContainsCycle(Graph& g) {
     return "-1";
 }
 
-string Algorithms::isBipartite(Graph& g) {
+string Algorithms::isBipartite(const Graph& g) {
     /*
     To check if a graph is bipartite, we will perform BFS on the graph and color the vertices in two colors.
     If in some point we discover a vertex that is colored with the same color as its parent, then the graph is not bipartite.
@@ -214,7 +213,7 @@ string Algorithms::isBipartite(Graph& g) {
     return result;
 }
 
-string Algorithms::negativeCycle(Graph& g) {
+string Algorithms::negativeCycle(const Graph& g) {
     /*
     To find a negative cycle in the graph, we will add a new vertex to the graph and connect it to all the other vertices with an edge of weight 0.
     Then we will perform Bellman-Ford algorithm from the new vertex.
@@ -273,7 +272,7 @@ string Algorithms::negativeCycle(Graph& g) {
   @param g - the graph to perform DFS on
   @return a list of vertices in the order they were discovered
 */
-vector<vector<size_t>> dfs(Graph& g) {
+vector<vector<size_t>> dfs(const Graph& g) {
     size_t n = g.getGraph().size();
     // create a list of colors for the vertices
     vector<Color> colors(n, WHITE);
@@ -298,7 +297,7 @@ vector<vector<size_t>> dfs(Graph& g) {
  * @param colors - colors of the vertices
  * @return a list of vertices in the order they were discovered
  */
-vector<size_t> dfs(Graph& g, size_t src, vector<Color>* colors) {
+vector<size_t> dfs(const Graph& g, size_t src, vector<Color>* colors) {
     size_t n = g.getGraph().size();
 
     vector<size_t> dfsOrder;
@@ -331,7 +330,7 @@ vector<size_t> dfs(Graph& g, size_t src, vector<Color>* colors) {
 };
 
 // ~ Shortest Path algorithms ~
-pair<vector<int>, vector<int>> bfs(Graph& g, size_t src) {
+pair<vector<int>, vector<int>> bfs(const Graph& g, size_t src) {
     size_t n = g.getGraph().size();
 
     // init the distances and parents vectors
@@ -360,7 +359,7 @@ pair<vector<int>, vector<int>> bfs(Graph& g, size_t src) {
     return {distances, parents};
 }
 
-pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src) {
+pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src) {
     size_t n = g.getGraph().size();
     vector<int> distances(n, INF);
     vector<int> parents(n, -1);
@@ -424,7 +423,7 @@ pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src) {
  * 2. the second vector contains the parent of each vertex in the graph in the BFS tree
  *
  */
-pair<vector<int>, vector<int>> dijkstra(Graph& g, size_t src) {
+pair<vector<int>, vector<int>> dijkstra(const Graph& g, size_t src) {
     size_t n = g.getGraph().size();
     vector<int> distances(n, INF);
     vector<int> parents(n, -1);
@@ -476,7 +475,7 @@ pair<vector<int>, vector<int>> dijkstra(Graph& g, size_t src) {
  * @param path - a vector to store sequence of vertices visited in during the DFS.
  * @return the cycle path in the format "v1->v2->...->v1" if a cycle is detected, otherwise return an empty string
  */
-string isContainsCycleUtil(Graph& g, size_t src, vector<Color>* colors, vector<int>* parents, vector<int>* path) {
+string isContainsCycleUtil(const Graph& g, size_t src, vector<Color>* colors, vector<int>* parents, vector<int>* path) {
     /*
     the path vector is used to store the sequence of vertices visited during the DFS.
     when  a vertex is visited, it is added to the path.
