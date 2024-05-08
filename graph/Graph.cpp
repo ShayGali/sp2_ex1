@@ -3,6 +3,8 @@
 #include <iostream>
 #include <stdexcept>
 
+using namespace shayg;
+
 using std::invalid_argument;
 
 Graph::Graph(bool isDirected) {

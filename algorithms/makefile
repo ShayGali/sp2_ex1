@@ -6,7 +6,8 @@ VALGRIND_FLAGS=-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
 
 all: Algorithms.o
 
-Algorithms.o: Algorithms.cpp Algorithms.hpp ../graph/Graph
+Algorithms.o: Algorithms.cpp Algorithms.hpp
+	make -C ../graph all 
 	$(CXX) $(CXXFLAGS) --compile $< -o $@
 
 clean:

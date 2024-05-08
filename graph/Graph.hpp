@@ -1,11 +1,14 @@
 #pragma once
 
+#include <limits>
 #include <vector>
 
 using std::vector;
 
 #define INF std::numeric_limits<int>::max()  // represent infinity
 #define NO_EDGE INF                          // represent no edge between two vertices as infinity
+
+namespace shayg {
 
 /**
  * @brief an abstract class that represents a graph as an adjacency matrix
@@ -64,3 +67,5 @@ class Graph {
      */
     bool isHaveNegativeEdgeWeight();
 };
+
+}  // namespace shayg

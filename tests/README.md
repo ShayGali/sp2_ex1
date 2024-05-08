@@ -145,7 +145,7 @@ graph LR;
     the shortest path from `A` to `E` is `A -> C -> D -> E`
     the shortest path from `A` to itself is `A`
 
-3. a graph with a no edge between the nodes, so there is no path between any two nodes.
+3. a graph with no edge between the nodes, so there is no path between any two nodes.
 
 4. send an invalid node to the function, so the function should raise an exception. (we cant send a negative node to the function)
 
@@ -483,7 +483,7 @@ graph LR;
 ### `isBipartite` for Undirected Graph
 
 
-1.
+1. a graph with a odd cycle, so the function should return false.
 ```mermaid
 graph LR;
     A --- B;
@@ -505,5 +505,24 @@ graph LR;
 <hr>
 
 ### `negativeCycle` for Directed Graph
+
+1. graph with a negative cycle of 3 nodes
+```mermaid
+graph LR;
+    A --> |-1| B;
+    B --> |-1| C;
+    C --> |1| A;
+```
+
+2.
+```mermaid
+graph LR;
+    A --> |5| B;
+    A --> |3| C;
+    C --> |-2| D;
+    D --> |-1| E;
+    E --> |-1| C;
+
+```
 
 ### `negativeCycle` for Undirected Graph

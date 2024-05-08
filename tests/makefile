@@ -1,7 +1,7 @@
 
 CXX=clang++-9
 CXXFLAGS=-std=c++2a -g -Werror -Wsign-conversion # c++20
-VALGRIND_FLAGS=-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
+VALGRIND_FLAGS=-v --leak-check=full --show-leak-kinds=all --error-exitcode=99
 
 
 SOURCES= ../graph/Graph.cpp ../algorithms/Algorithms.cpp

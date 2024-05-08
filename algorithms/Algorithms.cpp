@@ -19,6 +19,7 @@ enum Color {
     RED
 };
 
+using namespace shayg;
 using std::pair, std::vector, std::queue, std::string;
 
 // ~~~ declare the helper functions ~~~
@@ -135,8 +136,11 @@ string Algorithms::isBipartite(Graph& g) {
 
     in the end, we will return the two sets of vertices, according to the colors of the vertices.
 
-    if the graph is directed, we will convert it to an undirected graph and then perform the algorithm. 
+    if the graph is directed, we will convert it to an undirected graph and then perform the algorithm.
     */
+    if (g.getGraph().size() == 0) {
+        return "The graph is bipartite: A={}, B={}";
+    }
 
     if (g.isDirectedGraph()) {
         Graph undirectedGraph;
@@ -153,7 +157,7 @@ string Algorithms::isBipartite(Graph& g) {
         }
 
         undirectedGraph.loadGraph(adjMatrix);
-        g = undirectedGraph;
+        return isBipartite(undirectedGraph);
     }
 
     size_t n = g.getGraph().size();
@@ -167,12 +171,12 @@ string Algorithms::isBipartite(Graph& g) {
     queue<size_t> q;
     q.push(0);
     colors[0] = BLUE;
-    setB.push_back(0); // add the first vertex to the blue set
+    setB.push_back(0);  // add the first vertex to the blue set
 
     while (q.size() != 0) {
         size_t u = q.front();
         q.pop();
-        for (size_t v = 0; v < n; v++) { // loop over the neighbors of the vertex
+        for (size_t v = 0; v < n; v++) {  // loop over the neighbors of the vertex
             if (g.getGraph()[u][v] != NO_EDGE) {
                 if (colors[v] == colors[u]) {
                     return "The graph is not bipartite";
@@ -185,7 +189,7 @@ string Algorithms::isBipartite(Graph& g) {
                         colors[v] = BLUE;
                         setB.push_back(v);
                     }
-                q.push(v); // add the vertex to the queue (this is the first time we discover it)
+                    q.push(v);  // add the vertex to the queue (this is the first time we discover it)
                 }
             }
         }
@@ -239,7 +243,8 @@ string Algorithms::negativeCycle(Graph& g) {
     // connect the new vertex to all the other vertices with an edge of weight 0
     for (size_t i = 0; i < n; i++) {
         newGraphMat[n][i] = 0;
-        newGraphMat[i][n] = 0;  // //TODO: check if we need to be NO_EDGE
+        if (!g.isDirectedGraph())
+            newGraphMat[i][n] = 0;
     }
 
     newGraph.loadGraph(newGraphMat);
@@ -249,14 +254,12 @@ string Algorithms::negativeCycle(Graph& g) {
         bellmanFord(newGraph, n);
     } catch (Algorithms::NegativeCycleException e) {  // if the graph contains a negative cycle
         // get the negative cycle
-        string negativeCycle = std::to_string(e.detectedCycleStart);
-        size_t parent = e.detectedCycleStart;
-        while (e.parentList[parent] != e.detectedCycleStart) {
-            parent = (size_t)e.parentList[parent];
-            negativeCycle += "->" + std::to_string(parent);
+        vector<size_t> cycle = e.cycle;
+        string cycleStr = std::to_string(cycle[0]);
+        for (size_t i = 1; i < cycle.size(); i++) {
+            cycleStr += "->" + std::to_string(cycle[i]);
         }
-        negativeCycle += "->" + std::to_string(e.detectedCycleStart);
-        return negativeCycle;
+        return cycleStr;
     }
     return "No negative cycle";
 }
@@ -356,6 +359,7 @@ pair<vector<int>, vector<int>> bfs(Graph& g, size_t src) {
 
     return {distances, parents};
 }
+
 pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src) {
     size_t n = g.getGraph().size();
     vector<int> distances(n, INF);
@@ -364,6 +368,7 @@ pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src) {
     distances[src] = 0;
     // relax all edges n-1 times
     for (size_t i = 0; i < n - 1; i++) {
+        bool relaxed = false;  // if we dont relax any edge in the current iteration, then we can break the loop
         // for each edge (u, v) in the graph
         for (size_t u = 0; u < n; u++) {
             for (size_t v = 0; v < n; v++) {
@@ -375,12 +380,20 @@ pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src) {
                     }
 
                     // relax the edge
+                    if (distances[u] == INF || g.getGraph()[u][v] == INF) {
+                        continue;
+                    }
+
                     if (distances[u] + g.getGraph()[u][v] < distances[v]) {
                         distances[v] = distances[u] + g.getGraph()[u][v];
                         parents[v] = (int)u;
+                        relaxed = true;
                     }
                 }
             }
+        }
+        if (!relaxed) {
+            break;
         }
     }
 
@@ -401,6 +414,7 @@ pair<vector<int>, vector<int>> bellmanFord(Graph& g, size_t src) {
 
     return std::make_pair(distances, parents);
 }
+
 /**
  * @brief Perform Dijkstra's algorithm from a given source vertex
  * @param g - the graph to perform Dijkstra's algorithm on (must be a non-negative weighted graph)

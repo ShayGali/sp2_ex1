@@ -3,7 +3,7 @@
 #include "../graph/Graph.hpp"
 
 using std::string;
-
+namespace shayg {
 class Algorithms {
    public:
     /**
@@ -49,11 +49,28 @@ class Algorithms {
 
     class NegativeCycleException : public std::exception {
        public:
-        size_t detectedCycleStart;
-        vector<int> parentList;
+        vector<size_t> cycle;
+
         NegativeCycleException(size_t detectedCycleStart, vector<int> parentList) {
-            this->detectedCycleStart = detectedCycleStart;
-            this->parentList = parentList;
+            int cycleVertices = detectedCycleStart;
+
+            // make sure that we in the cycle
+            for (size_t i = 0; i < parentList.size(); i++) {
+                cycleVertices = parentList[(size_t)cycleVertices];
+            }
+
+            vector<size_t> cycle;
+
+            for (size_t v = (size_t)cycleVertices;; v = (size_t)parentList[v]) {
+                cycle.push_back(v);
+                if (v == cycleVertices && cycle.size() > 1) {
+                    break;
+                }
+            }
+
+            reverse(cycle.begin(), cycle.end());
+
+            this->cycle = cycle;
         }
 
         virtual const char* what() const throw() {
@@ -61,3 +78,4 @@ class Algorithms {
         }
     };
 };
+}  // namespace shayg
