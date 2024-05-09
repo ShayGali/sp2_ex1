@@ -33,7 +33,7 @@ class Graph {
      * @throw invalid_argument if the graph is not a square matrix or the diagonal of the matrix is not NO_EDGE
      * @throw invalid_argument if the graph is undirected and the matrix is not symmetric
      */
-    void loadGraph(const vector<vector<int>> ajdList);
+    void loadGraph(const vector<vector<int>> &ajdList);
 
     /**
      * @brief Print the graph as an adjacency matrix

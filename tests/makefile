@@ -18,6 +18,8 @@ test: $(TEST_OBJECTS) $(OBJECTS)
 valgrind: test
 	valgrind $(VALGRIND_FLAGS) ./test
 	
+tidy:
+	clang-tidy $(TEST) -checks=bugprone-*,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-owning-memory --warnings-as-errors=-* --
 
 graph:
 	make -C ../graph all

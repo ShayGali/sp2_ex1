@@ -20,7 +20,10 @@ enum Color {
 };
 
 using namespace shayg;
-using std::pair, std::vector, std::queue, std::string;
+using std::pair;
+using std::queue;
+using std::string;
+using std::vector;
 
 // ~~~ declare the helper functions ~~~
 
@@ -49,7 +52,7 @@ bool Algorithms::isConnected(const Graph& g) {
     4. If the DFS discovers all the vertices, then the graph is connected.
    */
     // check if the graph is empty
-    if (g.getGraph().size() == 0) {
+    if (g.getGraph().empty()) {
         return true;
     }
 
@@ -106,7 +109,7 @@ string Algorithms::shortestPath(const Graph& g, size_t src, size_t dest) {
     string path = std::to_string(dest);
     int parent = parents[dest];
     while (parent != -1) {
-        path = std::to_string(parent) + "->" + path;
+        path.insert(0, std::to_string(parent) + "->");
         parent = parents[(size_t)parent];
     }
 
@@ -138,7 +141,7 @@ string Algorithms::isBipartite(const Graph& g) {
 
     if the graph is directed, we will convert it to an undirected graph and then perform the algorithm.
     */
-    if (g.getGraph().size() == 0) {
+    if (g.getGraph().empty()) {
         return "The graph is bipartite: A={}, B={}";
     }
 
@@ -173,7 +176,7 @@ string Algorithms::isBipartite(const Graph& g) {
     colors[0] = BLUE;
     setB.push_back(0);  // add the first vertex to the blue set
 
-    while (q.size() != 0) {
+    while (!q.empty()) {
         size_t u = q.front();
         q.pop();
         for (size_t v = 0; v < n; v++) {  // loop over the neighbors of the vertex
@@ -380,16 +383,11 @@ pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src, bool isDi
                     // if the graph is undirected, we should ignore the edge that connects the current vertex to its parent
                     if (!isDirected && parents[u] == (int)v) {
                         if (distances[u] + g.getGraph()[u][v] < distances[v]) {
-                            // std::cout << "not relaxing edge " << u+1 << " " << v+1 << std::endl;
-                            // std::cout << "distances[" << u+1 << "] = " << distances[u] << std::endl;
-                            // std::cout << "g.getGraph()[" << u+1 << "][" << v+1 << "] = " << g.getGraph()[u][v] << std::endl;
-                            // std::cout << "distances[" << v+1 << "] = " << distances[v] << std::endl;
                         }
                         continue;
                     }
 
                     // relax the edge (u, v)
-
                     if (distances[u] == INF || g.getGraph()[u][v] == INF) {
                         continue;
                     }
@@ -403,7 +401,7 @@ pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src, bool isDi
             }
         }
         if (!relaxed) {
-            // break;
+            break;
         }
     }
 
@@ -422,7 +420,6 @@ pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src, bool isDi
 
                 if (distances[u] + g.getGraph()[u][v] < distances[v]) {
                     parents[v] = (int)u;
-
                     throw Algorithms::NegativeCycleException(v, parents);
                 }
             }
@@ -537,7 +534,7 @@ string isContainsCycleUtil(const Graph& g, size_t src, vector<Color>* colors, ve
  * @return the cycle path in the format "v1->v2->...->v1"
  */
 string constructCyclePath(vector<int>& path, int start) {
-    string cycle = "";
+    string cycle;
     size_t v = 0;
     // find the start of the cycle in the path
     for (v = 0; v < path.size(); v++) {

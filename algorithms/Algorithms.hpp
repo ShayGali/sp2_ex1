@@ -55,21 +55,15 @@ class Algorithms {
 
         NegativeCycleException(size_t detectedCycleStart, vector<int> parentList) {
             int cycleVertices = detectedCycleStart;
-            int prev;
+            
             // make sure that we in the cycle
             for (size_t i = 0; i < parentList.size(); i++) {
-                if (cycleVertices == -1) {
-                    std::cout << "Cycle not found" << std::endl;
-                    std::cout << "prev: " << prev << std::endl;
-                    break;
-                }
-                prev = cycleVertices;
                 cycleVertices = parentList[(size_t)cycleVertices];
             }
 
             vector<size_t> cycle;
 
-            for (size_t v = (size_t)cycleVertices;true; v = (size_t)parentList[v]) {
+            for (size_t v = (size_t)cycleVertices; true; v = (size_t)parentList[v]) {
                 cycle.push_back(v);
                 if (v == cycleVertices && cycle.size() > 1) {
                     break;

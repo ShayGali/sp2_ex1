@@ -16,11 +16,8 @@ Graph::Graph(bool isDirected) {
     this->haveNegativeEdgeWeight = false;
 }
 
-void Graph::loadGraph(const vector<vector<int>> ajdList) {
-    // Create a deep copy of the adjacency matrix
-    vector<vector<int>> ajdListCopy = ajdList;
-    // assign the adjacency matrix to the class field
-    this->ajdList = ajdListCopy;
+void Graph::loadGraph(const vector<vector<int>> &ajdList) {
+    this->ajdList = ajdList;
     /*
      * update the isWeighted and haveNegativeEdgeWeight fields.
      * create an deep copy of the adjacency list.
@@ -59,7 +56,7 @@ void Graph::loadGraph(const vector<vector<int>> ajdList) {
     }
 }
 
-void Graph::printGraph() const{
+void Graph::printGraph() const {
     int count_edges = 0;
     for (size_t i = 0; i < ajdList.size(); i++) {
         for (size_t j = 0; j < ajdList[i].size(); j++) {
@@ -77,7 +74,7 @@ void Graph::printGraph() const{
 
 vector<vector<int>> Graph::getGraph() const { return this->ajdList; }
 
-bool Graph::isDirectedGraph() const{ return this->isDirected; }
-bool Graph::isWeightedGraph() const{ return this->isWeighted; }
+bool Graph::isDirectedGraph() const { return this->isDirected; }
+bool Graph::isWeightedGraph() const { return this->isWeighted; }
 
-bool Graph::isHaveNegativeEdgeWeight() const{ return this->haveNegativeEdgeWeight; }
+bool Graph::isHaveNegativeEdgeWeight() const { return this->haveNegativeEdgeWeight; }

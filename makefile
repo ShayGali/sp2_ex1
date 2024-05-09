@@ -6,7 +6,7 @@ VALGRIND_FLAGS=-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
 SOURCES=graph/Graph.cpp algorithms/Algorithms.cpp
 OBJECTS=$(subst .cpp,.o,$(SOURCES)) # replace .cpp with .o in SOURCES
 
-.PHONY: run valgrind clean test graph algorithms
+.PHONY: run valgrind tidy clean test graph algorithms
 
 PROG=main
 
@@ -23,6 +23,8 @@ test:
 valgrind: $(PROG)
 	valgrind $(VALGRIND_FLAGS) ./$<
 
+tidy:
+	clang-tidy $(SOURCES) -checks=bugprone-*,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-owning-memory --warnings-as-errors=-* --
 
 graph:
 	make -C graph all
