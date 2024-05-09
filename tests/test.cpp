@@ -8,38 +8,6 @@
 #include "doctest.h"
 
 using namespace shayg;
-
-TEST_CASE("hoi"){
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-    CHECK(1 == 1);
-}
-
 TEST_CASE("Test loadGraph for Directed Graph") {
     Graph g(true);
 
