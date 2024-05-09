@@ -73,7 +73,6 @@ bool Algorithms::isConnected(const Graph& g) {
 }
 
 string Algorithms::shortestPath(const Graph& g, size_t src, size_t dest) {
-
     // check for valid source and destination vertices
     if (src >= g.getGraph().size() || dest >= g.getGraph().size()) {
         throw std::invalid_argument("Invalid source or destination vertex");
@@ -83,7 +82,6 @@ string Algorithms::shortestPath(const Graph& g, size_t src, size_t dest) {
         return std::to_string(src);
     }
 
-    
     pair<vector<int>, vector<int>> shortestPathResult;
 
     // if the graph is not weighted, we can use BFS to find the shortest path
@@ -102,6 +100,7 @@ string Algorithms::shortestPath(const Graph& g, size_t src, size_t dest) {
     // get the shortest path from the src to the dest
     vector<int> distances = shortestPathResult.first;
     vector<int> parents = shortestPathResult.second;
+
     // if the distance to the destination vertex is infinity, then there is no path between the source and destination vertices
     if (distances[dest] == INF) {
         return "-1";
@@ -119,14 +118,20 @@ string Algorithms::shortestPath(const Graph& g, size_t src, size_t dest) {
 }
 
 string Algorithms::isContainsCycle(const Graph& g) {
+    /*
+    a graph contains a cycle if has a back edge.
+
+    so we can perform DFS on the graph and check if we discover a back edge.
+    */
     vector<Color> colors(g.getGraph().size(), WHITE);
     vector<int> parents(g.getGraph().size(), -1);
-    vector<int> path;
+    vector<int> path;  // to store the sequence of vertices visited during the DFS - used to construct the cycle path
 
+    // start DFS on the graph
     for (size_t i = 0; i < g.getGraph().size(); i++) {
         if (colors[i] == WHITE) {
             string cycle = isContainsCycleUtil(g, i, &colors, &parents, &path);
-            if (!cycle.empty()) {
+            if (!cycle.empty()) {  // if a cycle is detected
                 return cycle;
             }
         }
@@ -147,12 +152,13 @@ string Algorithms::isBipartite(const Graph& g) {
         return "The graph is bipartite: A={}, B={}";
     }
 
+    // if the graph is directed, convert it to an undirected graph
     if (g.isDirectedGraph()) {
         Graph undirectedGraph;
         // convert the directed graph to an undirected graph
         vector<vector<int>> adjMatrix = g.getGraph();
 
-        // make the graph symmetric
+        // make the graph symmetric (we don't care about the edge weights, we just need to know if there is an edge or not)
         for (size_t i = 0; i < adjMatrix.size(); i++) {
             for (size_t j = 0; j < adjMatrix.size(); j++) {
                 if (adjMatrix[i][j] != NO_EDGE) {
@@ -162,17 +168,20 @@ string Algorithms::isBipartite(const Graph& g) {
         }
 
         undirectedGraph.loadGraph(adjMatrix);
+
+        // perform the algorithm on the undirected graph
         return isBipartite(undirectedGraph);
     }
 
     size_t n = g.getGraph().size();
     // create a list of colors for the vertices
     vector<Color> colors(n, WHITE);
-    // create two sets of vertices
+
+    // create two sets of vertices (A and B)
     vector<size_t> setB;
     vector<size_t> setR;
 
-    // start BFS from the first vertex
+    // start BFS from the first vertex (and color the graph with two colors)
     queue<size_t> q;
     q.push(0);
     colors[0] = BLUE;
@@ -183,10 +192,12 @@ string Algorithms::isBipartite(const Graph& g) {
         q.pop();
         for (size_t v = 0; v < n; v++) {  // loop over the neighbors of the vertex
             if (g.getGraph()[u][v] != NO_EDGE) {
-                if (colors[v] == colors[u]) {
+                if (colors[v] == colors[u]) {  // if the vertex is colored with the same color as its neighbor
                     return "The graph is not bipartite";
                 }
-                if (colors[v] == WHITE) {
+
+                if (colors[v] == WHITE) {  // if the vertex is not discovered yet
+                                           // color the vertex with the opposite color of its parent
                     if (colors[u] == BLUE) {
                         colors[v] = RED;
                         setR.push_back(v);

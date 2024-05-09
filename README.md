@@ -67,17 +67,24 @@ A helper enum that represents the color of the vertices in the graph. it can be 
 
 The `WHITE`, `GRAY` and `BLACK` colors are used in the DFS algorithm, and the `BLUE` and `RED` colors are used in the bipartite algorithm.
 
+### NegativeCycleException class
+This is a custom exception class that will be thrown when the graph contains a negative cycle, in the Bellman-Ford algorithm.
+
+we find a negative cycle in the graph if the Bellman-Ford algorithm we can relax the edges in the last iteration.
+when we find that edge, we will throw this exception, we the vertex and the parents array to construct the negative cycle.
+The constructor of this class will take the vertex and the parents array, and build the cycle path.
+
 ### isConnected
 
 In this function, we will use the DFS algorithm to check if the graph is connected or not.
 
 to check if undirected graph is connected, we can perform DFS on the graph and check if all the vertices are discovered.
 
-The way to check if a directed graph is connected is toperform DFS twice:
+The way to check if a directed graph is connected is transformed DFS twice:
 1. Perform DFS on the graph.
-2. If the DFS discovers all the vertices, then the graph isconnected. (if we got only one DFS tree)
+2. If the DFS discovers all the vertices, then the graph is connected. (if we got only one DFS tree)
 3. Perform DFS on the root of the last DFS tree.
-4. If the DFS discovers all the vertices, then the graph isconnected. otherwise, the graph is not connected.
+4. If the DFS discovers all the vertices, then the graph is connected. otherwise, the graph is not connected.
 
 ### shortestPath
 
@@ -89,7 +96,7 @@ In this function, we will use the one of 3 algorithms to find the shortest path 
 
 > Note: we represent the graph as an adjacency matrix, so both Dijkstra and Bellman-Ford algorithms run in $O(V^3)$ time complexity.
 
-> Note: the Bellman-Ford algorithm **DONT** work with undirected graphs with negative weights.
+> Note: the Bellman-Ford algorithm **DON'T** work with undirected graphs with negative weights.
 
 If there is no path between the two vertices, the function will return "-1".
 
@@ -114,7 +121,7 @@ graph LR;
 ### isBipartite
 In this function, we will use the BFS algorithm to check if the graph is bipartite or not. A graph is bipartite iff it is 2-colorable. so we can use the BFS algorithm to check if the graph is bipartite or not.
 
-For directed graphs, we need to convert the directed graph to an undirected graph, because we dont care about the direction of the edges in this function (and the weights).
+For directed graphs, we need to convert the directed graph to an undirected graph, because we don't care about the direction of the edges in this function (and the weights).
 
 If the graph is bipartite, the function will return any to sets of vertices that represent a bipartite graph. otherwise, the function will return  `"The graph is not bipartite"`.
 
@@ -126,8 +133,8 @@ This function will use the Bellman-Ford algorithm to check if the graph contains
 
 The way we can find a negative cycle in the graph is to add new vertex `s` and connect it with all the vertices in the graph with weight 0, and for each $uv \notin E$ we will define $w(uv) = \infty$. then we will run the Bellman-Ford algorithm on the graph with the new vertex `s`. if the Bellman-Ford algorithm finds a negative cycle, then the graph contains a negative cycle.
 
-> Note: the Bellman-Ford algorithm **DONT** work with undirected graphs with negative weights.
+> Note: the Bellman-Ford algorithm **DON'T** work with undirected graphs with negative weights.
 
 
 ## Test
-I worte a full README file for the test, you can find it [here](./tests/README.md)
+I wrote a full README file for the test, you can find it [here](./tests/README.md)
