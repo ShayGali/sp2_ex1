@@ -15,12 +15,15 @@ test: $(TEST_OBJECTS) $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o test
 	./test
 
+valgrind: test
+	valgrind $(VALGRIND_FLAGS) ./test
+	
+
 graph:
 	make -C ../graph all
 
 algorithms:
 	make -C ../algorithms all
-
 
 %.o: %.cpp 
 	$(CXX) $(CXXFLAGS) --compile $< -o $@

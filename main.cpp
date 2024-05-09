@@ -12,15 +12,13 @@ int main() {
 
     vector<vector<int>> graph = {
         // clang-format off
-    { NO_EDGE, 5      , 3      , NO_EDGE, NO_EDGE }, // A
-    { NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE }, // B
-    { NO_EDGE, NO_EDGE, NO_EDGE, -2     , NO_EDGE }, // C
-    { NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE, -1      }, // D
-    { NO_EDGE, NO_EDGE, -1     , NO_EDGE, NO_EDGE }  // E
+        {NO_EDGE, -1,      NO_EDGE},
+        {1,       NO_EDGE, -5     },
+        {NO_EDGE, NO_EDGE, NO_EDGE}
         // clang-format on
     };
 
     g.loadGraph(graph);
-    cout << Algorithms::negativeCycle(g) << endl;
+    cout << Algorithms::shortestPath(g, 2, 0) << endl;
     return 0;
 }

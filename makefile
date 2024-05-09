@@ -6,7 +6,7 @@ VALGRIND_FLAGS=-v --leak-check=full --show-leak-kinds=all  --error-exitcode=99
 SOURCES=graph/Graph.cpp algorithms/Algorithms.cpp
 OBJECTS=$(subst .cpp,.o,$(SOURCES)) # replace .cpp with .o in SOURCES
 
-.PHONY: run clean test graph algorithms
+.PHONY: run valgrind clean test graph algorithms
 
 PROG=main
 
@@ -19,6 +19,9 @@ $(PROG): $(PROG).o $(OBJECTS)
 
 test: 
 	make -C tests test
+
+valgrind: $(PROG)
+	valgrind $(VALGRIND_FLAGS) ./$<
 
 
 graph:

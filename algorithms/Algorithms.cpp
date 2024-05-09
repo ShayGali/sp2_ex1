@@ -31,6 +31,7 @@ vector<size_t> dfs(const Graph& g, size_t src, vector<Color>* colors);
 
 pair<vector<int>, vector<int>> bfs(const Graph& g, size_t src);
 pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src);
+pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src, bool isDirected);
 pair<vector<int>, vector<int>> dijkstra(const Graph& g, size_t src);
 
 string isContainsCycleUtil(const Graph& g, size_t src, vector<Color>* colors, vector<int>* parents, vector<int>* path);
@@ -228,7 +229,8 @@ string Algorithms::negativeCycle(const Graph& g) {
     size_t n = g.getGraph().size();
 
     // create a new graph with a new vertex
-    Graph newGraph = Graph(g.isDirectedGraph());
+    Graph newGraph = Graph(true);  // we will build a directed graph, and save if g was directed or not
+    bool isDirected = g.isDirectedGraph();
 
     vector<vector<int>> newGraphMat(n + 1, vector<int>(n + 1, INF));
     for (size_t i = 0; i < n; i++) {
@@ -242,15 +244,13 @@ string Algorithms::negativeCycle(const Graph& g) {
     // connect the new vertex to all the other vertices with an edge of weight 0
     for (size_t i = 0; i < n; i++) {
         newGraphMat[n][i] = 0;
-        if (!g.isDirectedGraph())
-            newGraphMat[i][n] = 0;
     }
 
     newGraph.loadGraph(newGraphMat);
 
     // start Bellman-Ford algorithm from the new vertex
     try {
-        bellmanFord(newGraph, n);
+        bellmanFord(newGraph, n, isDirected);
     } catch (Algorithms::NegativeCycleException e) {  // if the graph contains a negative cycle
         // get the negative cycle
         vector<size_t> cycle = e.cycle;
@@ -360,6 +360,10 @@ pair<vector<int>, vector<int>> bfs(const Graph& g, size_t src) {
 }
 
 pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src) {
+    return bellmanFord(g, src, g.isDirectedGraph());
+}
+
+pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src, bool isDirected) {
     size_t n = g.getGraph().size();
     vector<int> distances(n, INF);
     vector<int> parents(n, -1);
@@ -374,11 +378,18 @@ pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src) {
                 // if there is an edge between u and v
                 if (g.getGraph()[u][v] != NO_EDGE) {
                     // if the graph is undirected, we should ignore the edge that connects the current vertex to its parent
-                    if (!g.isDirectedGraph() && parents[u] == (int)v) {
+                    if (!isDirected && parents[u] == (int)v) {
+                        if (distances[u] + g.getGraph()[u][v] < distances[v]) {
+                            // std::cout << "not relaxing edge " << u+1 << " " << v+1 << std::endl;
+                            // std::cout << "distances[" << u+1 << "] = " << distances[u] << std::endl;
+                            // std::cout << "g.getGraph()[" << u+1 << "][" << v+1 << "] = " << g.getGraph()[u][v] << std::endl;
+                            // std::cout << "distances[" << v+1 << "] = " << distances[v] << std::endl;
+                        }
                         continue;
                     }
 
-                    // relax the edge
+                    // relax the edge (u, v)
+
                     if (distances[u] == INF || g.getGraph()[u][v] == INF) {
                         continue;
                     }
@@ -392,7 +403,7 @@ pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src) {
             }
         }
         if (!relaxed) {
-            break;
+            // break;
         }
     }
 
@@ -401,11 +412,18 @@ pair<vector<int>, vector<int>> bellmanFord(const Graph& g, size_t src) {
         for (size_t v = 0; v < n; v++) {
             if (g.getGraph()[u][v] != NO_EDGE) {
                 // if the graph is undirected, we should ignore the edge that connects the current vertex to its parent
-                if (!g.isDirectedGraph() && parents[u] == (int)v) {
+                if (!isDirected && parents[u] == (int)v) {
                     continue;
                 }
+
+                if (distances[u] == INF || g.getGraph()[u][v] == INF) {
+                    continue;
+                }
+
                 if (distances[u] + g.getGraph()[u][v] < distances[v]) {
-                    throw Algorithms::NegativeCycleException(u, parents);
+                    parents[v] = (int)u;
+
+                    throw Algorithms::NegativeCycleException(v, parents);
                 }
             }
         }
