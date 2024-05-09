@@ -11,11 +11,6 @@ using namespace shayg;
 TEST_CASE("Test loadGraph for Directed Graph") {
     Graph g(true);
 
-    // empty graph
-    vector<vector<int>> emptyGraph = {};
-    g.loadGraph(emptyGraph);
-    CHECK(std::equal(emptyGraph.begin(), emptyGraph.end(), g.getGraph().begin()));
-
     vector<vector<int>> graph = {
         // clang-format off
             {NO_EDGE, 1,       1      },
@@ -98,6 +93,53 @@ TEST_CASE("Test loadGraph for undirected graph") {
         // clang-format on
     };
     CHECK_THROWS_AS(g.loadGraph(graph4), std::invalid_argument);
+}
+
+TEST_CASE("Test printGraph") {
+    std::stringstream buffer;
+    std::streambuf* prevcoutbuf = std::cout.rdbuf(buffer.rdbuf());
+
+    Graph g_dir(true);
+    Graph g_undir(false);
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    vector<vector<int>> graph = {
+        // clang-format off
+        {NO_EDGE, 1,       1      },
+        {1,       NO_EDGE, 1      },
+        {1,       1,       NO_EDGE}
+        // clang-format on
+    };
+
+    g_dir.loadGraph(graph);
+
+    g_dir.printGraph();
+
+    CHECK(buffer.str() == "Directed graph with 3 vertices and 6 edges.\n");
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    buffer.str("");
+    g_undir.loadGraph(graph);
+    g_undir.printGraph();
+
+    CHECK(buffer.str() == "Undirected graph with 3 vertices and 3 edges.\n");
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // empty graph
+    buffer.str("");
+
+    vector<vector<int>> emptyGraph = {};
+    g_dir.loadGraph(emptyGraph);
+    g_dir.printGraph();
+    CHECK(buffer.str() == "Directed graph with 0 vertices and 0 edges.\n");
+
+    buffer.str("");
+    g_undir.loadGraph(emptyGraph);
+    g_undir.printGraph();
+    CHECK(buffer.str() == "Undirected graph with 0 vertices and 0 edges.\n");
+
+    // Restore std::cout to its original buffer
+    std::cout.rdbuf(prevcoutbuf);
 }
 
 TEST_CASE("Test isConnected for directed graph") {
@@ -821,7 +863,6 @@ TEST_CASE("Test negativeCycle for directed graph") {
     CHECK(Algorithms::negativeCycle(g) == "3->4->2->3");
 }
 
-
 TEST_CASE("Test negativeCycle for undirected graph") {
     Graph g(false);
 
@@ -839,54 +880,4 @@ TEST_CASE("Test negativeCycle for undirected graph") {
 
     g.loadGraph(graph1);
     CHECK(Algorithms::negativeCycle(g) == "No negative cycle");
-}
-
-
-
-TEST_CASE("Test printGraph") {
-    std::stringstream buffer;
-    std::streambuf* prevcoutbuf = std::cout.rdbuf(buffer.rdbuf());
-
-    Graph g_dir(true);
-    Graph g_undir(false);
-
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    vector<vector<int>> graph = {
-        // clang-format off
-        {NO_EDGE, 1,       1      },
-        {1,       NO_EDGE, 1      },
-        {1,       1,       NO_EDGE}
-        // clang-format on
-    };
-
-    g_dir.loadGraph(graph);
-
-    g_dir.printGraph();
-
-    CHECK(buffer.str() == "Directed graph with 3 vertices and 6 edges.\n");
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    buffer.str("");
-    g_undir.loadGraph(graph);
-    g_undir.printGraph();
-
-    CHECK(buffer.str() == "Undirected graph with 3 vertices and 3 edges.\n");
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // empty graph
-    buffer.str("");
-
-    vector<vector<int>> emptyGraph = {};
-    g_dir.loadGraph(emptyGraph);
-    g_dir.printGraph();
-    CHECK(buffer.str() == "Directed graph with 0 vertices and 0 edges.\n");
-
-    buffer.str("");
-    g_undir.loadGraph(emptyGraph);
-    g_undir.printGraph();
-    CHECK(buffer.str() == "Undirected graph with 0 vertices and 0 edges.\n");
-
-
-    // Restore std::cout to its original buffer
-    std::cout.rdbuf(prevcoutbuf);
 }

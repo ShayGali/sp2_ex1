@@ -3,11 +3,13 @@ in this file I will explain the tests that I wrote for the first exercise.
 
 there are 6 main functions that I tested:
 1. `loadGraph`
-2. `isConnected`
-3. `shortestPath`
-4. `isContainsCycle`
-5. `isBipartite`
-6. `negativeCycle`
+2. `printGraph`
+3. `isConnected`
+4. `shortestPath`
+5. `isContainsCycle`
+6. `isBipartite`
+7. `negativeCycle`
+
 
 in each function I tested the function with different types of graphs:
 * directed graph
@@ -24,18 +26,22 @@ for the `shortestPath` function I tested the function with different types of gr
 
 will check if the `loadGraph` function works correctly for a directed graph.
 
-there are 3 tests in this file:
+there are 4 tests in this file:
 1. test if the graph is loaded correctly
 2. pass a non square matrix so the function should raise `invalid_argument` exception
 3. pass a matrix that have a non `NO_EDGE` value on the main diagonal so the function should raise `invalid_argument` exception
 4. pass an empty matrix that represent an empty graph (no vertices and no edges)
    
 ### `loadGraph` for Undirected Graph
-smae as the previous test but for an undirected graph.
+same as the previous test but for an undirected graph.
 in this test case I added a test to check if the matrix is symmetric or not.
 so tets case 4 will pass a non symmetric matrix and the function should raise `invalid_argument` exception.
 
 
+<hr>
+
+### `printGraph`
+in this test case we will check if the function will print the correct information about the graph.
 <hr>
 
 ### `isConnected` for Directed Graph
@@ -493,7 +499,7 @@ graph LR;
     C --- D;
 ```
 
-2.
+2. a cycle with 4 nodes, so the graph is bipartite.
 
 ```mermaid
 graph LR;
@@ -502,6 +508,9 @@ graph LR;
     B --- C;
     C --- D;
 ```
+
+
+
 <hr>
 
 ### `negativeCycle` for Directed Graph
@@ -514,6 +523,8 @@ graph LR;
     C --> |1| A;
 ```
 
+expected output: A -> B -> C -> A
+
 2.
 ```mermaid
 graph LR;
@@ -525,4 +536,6 @@ graph LR;
 
 ```
 
-### `negativeCycle` for Undirected Graph
+expected output: C -> D -> E -> C
+
+<!-- ### `negativeCycle` for Undirected Graph -->
