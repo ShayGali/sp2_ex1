@@ -42,14 +42,13 @@ string isContainsCycleUtil(const Graph& g, size_t src, vector<Color>* colors, ve
 // ~~~ implement the functions ~~~
 bool Algorithms::isConnected(const Graph& g) {
     /*
-
     to check if undirected graph is connected, we can perform DFS on the graph and check if all the vertices are discovered.
 
     The way to check if a directed graph is connected is to perform DFS twice:
     1. Perform DFS on the graph.
     2. If the DFS discovers all the vertices, then the graph is connected. (if we got only one DFS tree)
     3. Perform DFS on the root of the last DFS tree.
-    4. If the DFS discovers all the vertices, then the graph is connected.
+    4. If the DFS discovers all the vertices, then the graph is connected. otherwise, the graph is not connected.
    */
     // check if the graph is empty
     if (g.getGraph().empty()) {
@@ -74,6 +73,8 @@ bool Algorithms::isConnected(const Graph& g) {
 }
 
 string Algorithms::shortestPath(const Graph& g, size_t src, size_t dest) {
+
+    // check for valid source and destination vertices
     if (src >= g.getGraph().size() || dest >= g.getGraph().size()) {
         throw std::invalid_argument("Invalid source or destination vertex");
     }

@@ -22,6 +22,8 @@ class Algorithms {
      * @param dest - the destination vertex
      * @return the shortest path between the source and destination vertices in the format "src->...->dest".
      *  if there is no path between the source and destination vertices, return "-1"
+     * @throws NegativeCycleException if the graph contains a negative-weight cycle
+     * @throws std::invalid_argument if the source or destination vertices are not in the graph
      */
     static string shortestPath(const Graph& g, size_t src, size_t dest);
 
