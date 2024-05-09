@@ -28,9 +28,9 @@ class Algorithms {
     static string shortestPath(const Graph& g, size_t src, size_t dest);
 
     /**
-     * @brief Check if the graph contains a cycle
+     * @brief Check if the graph contains a cycle. If the graph contains a cycle, return the cycle in the format "v1->v2->...->v1".
      * @param g - the graph to check
-     * @return true if the graph contains a cycle, false otherwise
+     * @return The cycle in the format "v1->v2->...->v1" if the graph contains a cycle. Otherwise, return "-1".
      */
     static string isContainsCycle(const Graph& g);
 
@@ -46,7 +46,7 @@ class Algorithms {
      * @brief Find the negative cycle in the graph
      * @param g - the graph to search in
      * @return If the graph contains a negative cycle, return the cycle in the format "v1->v2->...->v1".
-     *    Otherwise, return "0".
+     *    Otherwise, return "No negative cycle".
      *
      */
     static string negativeCycle(const Graph& g);

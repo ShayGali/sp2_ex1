@@ -68,4 +68,4 @@ class Graph {
     bool isHaveNegativeEdgeWeight() const;
 };
 
-}  // namespace shayg
+}
