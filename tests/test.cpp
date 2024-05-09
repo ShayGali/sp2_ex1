@@ -853,28 +853,28 @@ TEST_CASE("Test negativeCycle for directed graph") {
     CHECK(Algorithms::negativeCycle(g) == "3->4->2->3");
 }
 
-/*
-// TEST_CASE("Test negativeCycle for undirected graph") {
-//     Graph g(false);
 
-//     // empty graph
-//     vector<vector<int>> emptyGraph = {};
-//     g.loadGraph(emptyGraph);
-//     CHECK(Algorithms::negativeCycle(g) == "No negative cycle");
+TEST_CASE("Test negativeCycle for undirected graph") {
+    Graph g(false);
 
-//     vector<vector<int>> graph1 = {
-//         // clang-format off
-//         {NO_EDGE, -1     },
-//         {-1     , NO_EDGE}
-//         // clang-format on
-//     };
+    // empty graph
+    vector<vector<int>> emptyGraph = {};
+    g.loadGraph(emptyGraph);
+    CHECK(Algorithms::negativeCycle(g) == "No negative cycle");
 
-//     g.loadGraph(graph1);
-//     CHECK(Algorithms::negativeCycle(g) == "No negative cycle");
-// }
-*/
+    vector<vector<int>> graph1 = {
+        // clang-format off
+        {NO_EDGE, -1     },
+        {-1     , NO_EDGE}
+        // clang-format on
+    };
 
-/*
+    g.loadGraph(graph1);
+    CHECK(Algorithms::negativeCycle(g) == "No negative cycle");
+}
+
+
+
 TEST_CASE("Test printGraph") {
     std::stringstream buffer;
     std::streambuf* prevcoutbuf = std::cout.rdbuf(buffer.rdbuf());
@@ -922,4 +922,3 @@ TEST_CASE("Test printGraph") {
     // Restore std::cout to its original buffer
     std::cout.rdbuf(prevcoutbuf);
 }
-*/
