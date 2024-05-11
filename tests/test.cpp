@@ -623,7 +623,7 @@ TEST_CASE("Test shortestPath for undirected graph weighted with negative weights
     };
     g.loadGraph(graph2);
     CHECK(::Algorithms::shortestPath(g, 1, 0) == "1->2->0");
-    // CHECK(Algorithms::shortestPath(g, 1, 2) == "1->0->2");
+    CHECK(Algorithms::shortestPath(g, 1, 2) == "1->0->2");
 }
 
 TEST_CASE("Test isContainsCycle for directed graph") {

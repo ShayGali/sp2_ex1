@@ -33,7 +33,6 @@ void Graph::loadGraph(const vector<vector<int>> &ajdList) {
             throw invalid_argument("The diagonal of the matrix must be NO_EDGE. (the " + std::to_string(i) + "th node is not a NO_EDGE)");
         }
 
-        this->ajdList[i][i] = NO_EDGE;  // the diagonal of the matrix must be NO_EDGE
     }
 
     // update the isWeighted and haveNegativeEdgeWeight fields if needed

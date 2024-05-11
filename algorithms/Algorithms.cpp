@@ -90,6 +90,42 @@ string Algorithms::shortestPath(const Graph& g, size_t src, size_t dest) {
     } else if (g.isHaveNegativeEdgeWeight()) {  // if the graph has negative edge weights, we can use Bellman-Ford algorithm
         try {
             shortestPathResult = bellmanFord(g, src);
+            if (!g.isDirectedGraph()) {  // if the graph is undirected, we can try to find the shortest path from the destination to the source
+                pair<vector<int>, vector<int>> bellmanResult2 = bellmanFord(g, dest);
+
+                // choose the correct result (the longer path)
+                vector<int> parents1 = shortestPathResult.second;
+                size_t path1Length = 0;
+                int parent = parents1[dest];
+                while (parent != -1) {
+                    path1Length++;
+                    parent = parents1[(size_t)parent];
+                }
+
+                vector<int> parents2 = bellmanResult2.second;
+                size_t path2Length = 0;
+                parent = parents2[src];
+                while (parent != -1) {
+                    path2Length++;
+                    parent = parents2[(size_t)parent];
+                }
+
+                if (path1Length < path2Length) {  // update the result if needed
+                    shortestPathResult = bellmanResult2;
+                    // reverse the parents vector
+                    vector<int> parents = shortestPathResult.second;
+                    for (size_t i = 0; i < parents.size(); i++) {
+                        if (parents[i] != -1) {
+                            parents[i] = (int)i;
+                        }
+                    }
+
+                    shortestPathResult.second = parents;
+
+                    // swap the source and destination vertices
+                    dest = src;
+                }
+            }
         } catch (Algorithms::NegativeCycleException& e) {
             return e.what();
         }
