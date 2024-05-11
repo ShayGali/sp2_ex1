@@ -1,6 +1,7 @@
 
 #include "Algorithms.hpp"
 
+#include <algorithm>
 #include <functional>
 #include <iostream>
 #include <queue>
@@ -112,18 +113,23 @@ string Algorithms::shortestPath(const Graph& g, size_t src, size_t dest) {
 
                 if (path1Length < path2Length) {  // update the result if needed
                     shortestPathResult = bellmanResult2;
-                    // reverse the parents vector
-                    vector<int> parents = shortestPathResult.second;
-                    for (size_t i = 0; i < parents.size(); i++) {
-                        if (parents[i] != -1) {
-                            parents[i] = (int)i;
-                        }
-                    }
-
-                    shortestPathResult.second = parents;
 
                     // swap the source and destination vertices
                     dest = src;
+                    // create the path from the source to the destination
+                    vector<int> parents = shortestPathResult.second;
+                    string path = std::to_string(dest);
+                    reverse(path.begin(), path.end());
+                    int parent = parents[dest];
+                    while (parent != -1) {
+                        string temp = std::to_string(parent);
+                        reverse(temp.begin(), temp.end());
+                        path.insert(0, temp + ">-");
+                        parent = parents[(size_t)parent];
+                    }
+                    // reverse the path
+                    reverse(path.begin(), path.end());
+                    return path;
                 }
             }
         } catch (Algorithms::NegativeCycleException& e) {
@@ -149,7 +155,6 @@ string Algorithms::shortestPath(const Graph& g, size_t src, size_t dest) {
         path.insert(0, std::to_string(parent) + "->");
         parent = parents[(size_t)parent];
     }
-
     return path;
 }
 

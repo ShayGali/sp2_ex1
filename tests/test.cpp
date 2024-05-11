@@ -612,20 +612,31 @@ TEST_CASE("Test shortestPath for undirected graph weighted with negative weights
     CHECK(Algorithms::shortestPath(g, 0, 2) == "Graph contains a negative-weight cycle");
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    vector<vector<int>> graph2 = {
+   vector<vector<int>> graph2 = {
         // clang-format off
-    {NO_EDGE, 10     , -1     , 1      , NO_EDGE},
-    {10     , NO_EDGE, 10     , NO_EDGE, NO_EDGE},
-    {-1     , 10     , NO_EDGE, NO_EDGE, 2      },
-    {1      , NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE},
-    {NO_EDGE, NO_EDGE, 2      , NO_EDGE, NO_EDGE}
+    //      0        1        2        3      4        5     6      7        8        9       10       11
+    /* 0*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /* 1*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /* 2*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /* 4*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /* 5*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /* 6*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /* 7*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /* 8*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /* 9*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /*10*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /*12*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE , NO_EDGE},
+    /*13*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, 10     , -1     , 1      , NO_EDGE},
+    /*14*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,10     , NO_EDGE, 10     , NO_EDGE, NO_EDGE},
+    /*15*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,-1     , 10     , NO_EDGE, NO_EDGE, 2      },
+    /*16*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,1      , NO_EDGE, NO_EDGE, NO_EDGE, NO_EDGE},
+    /*17*/{NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE,NO_EDGE, NO_EDGE, 2      , NO_EDGE, NO_EDGE}
         // clang-format on
     };
-    g.loadGraph(graph2);
-    CHECK(::Algorithms::shortestPath(g, 1, 0) == "1->2->0");
-    CHECK(Algorithms::shortestPath(g, 1, 2) == "1->0->2");
-}
 
+    g.loadGraph(graph2);
+    CHECK(Algorithms::shortestPath(g, 12, 13) == "12->11->13");
+}
 TEST_CASE("Test isContainsCycle for directed graph") {
     Graph g(true);
 
