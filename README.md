@@ -2,7 +2,7 @@
 
 ## Author
 - [Shay Gali](https://github.com/shayGali)
-- Email: shaygali10@gmail.com
+- Email: shay.gali@msmail.ariel.ac.il
 
 In this assignment, we will implement some graph algorithms using C++.
 
