@@ -14,8 +14,8 @@ TEST_OBJECTS=$(subst .cpp,.o,$(TEST))
 
 .PHONY: clean test graph algorithms
 
-test: $(TEST_OBJECTS) $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ -o test
+test: $(TEST_OBJECTS) graph algorithms
+	$(CXX) $(CXXFLAGS) $(TEST_OBJECTS) $(OBJECTS) -o test
 	./test
 
 valgrind: test
