@@ -1,5 +1,9 @@
 # System Programming 2 - assignment 1
 
+## Author
+- [Shay Gali](https://github.com/shayGali)
+- Email: shaygali10@gmail.com
+
 In this assignment, we will implement some graph algorithms using C++.
 
 
@@ -96,7 +100,6 @@ In this function, we will use the one of 3 algorithms to find the shortest path 
 
 > Note: we represent the graph as an adjacency matrix, so both Dijkstra and Bellman-Ford algorithms run in $O(V^3)$ time complexity.
 
-> Note: the Bellman-Ford algorithm **DON'T** work with undirected graphs with negative weights.
 
 If there is no path between the two vertices, the function will return "-1".
 

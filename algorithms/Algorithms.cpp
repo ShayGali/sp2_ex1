@@ -305,7 +305,7 @@ string Algorithms::negativeCycle(const Graph& g) {
 
     newGraph.loadGraph(newGraphMat);
 
-    // start Bellman-Ford algorithm from the new vertex
+    // start Bellman-Ford algorithm from the new vertex`
     try {
         bellmanFord(newGraph, n, isDirected);
     } catch (Algorithms::NegativeCycleException e) {  // if the graph contains a negative cycle
