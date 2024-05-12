@@ -1,3 +1,6 @@
+# @author Shay Gali
+# @link shay.gali@msmail.ariel.ac.il
+
 
 CXX=clang++-9
 CXXFLAGS=-std=c++2a -g -Werror -Wsign-conversion # c++20
@@ -16,7 +19,7 @@ test: $(TEST_OBJECTS) $(OBJECTS)
 	./test
 
 valgrind: test
-	valgrind $(VALGRIND_FLAGS) ./test
+	valgrind --tool=memcheck $(VALGRIND_FLAGS) ./test 2>&1 | { egrep "lost| at " || true; }
 	
 tidy:
 	clang-tidy $(TEST) -checks=bugprone-*,clang-analyzer-*,cppcoreguidelines-*,performance-*,portability-*,readability-*,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-owning-memory --warnings-as-errors=-* --

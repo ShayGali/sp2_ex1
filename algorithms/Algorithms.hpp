@@ -1,3 +1,7 @@
+/**
+ * @author Shay Gali
+ * @link shay.gali@msmail.ariel.ac.il
+*/
 #include <algorithm>
 #include <iostream>
 #include <string>

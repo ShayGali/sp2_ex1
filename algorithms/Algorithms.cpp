@@ -1,4 +1,8 @@
 
+/**
+ * @author Shay Gali
+ * @link shay.gali@msmail.ariel.ac.il
+ */
 #include "Algorithms.hpp"
 
 #include <algorithm>
